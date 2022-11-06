@@ -2,16 +2,17 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
-const apiName = 'pestock'
+const apiName = '/pestock'
 const apiPort = 3000
 const db = require('./database/queries')
 
+const origins = [
+    "http://localhost:4200",
+]
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
 app.use(bodyParser.json())
-
-
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
