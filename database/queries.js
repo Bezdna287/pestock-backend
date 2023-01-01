@@ -38,13 +38,7 @@ const getImagesByCollection = (request, response) => {
       throw error
     }
     // console.log(results.rows)
-    let images = [];
-    results.rows.forEach(image=>{
-      let b64str = getImageB64(image.file_name)
-      console.log(b64str)
-      image.b64 = b64str;
-      images.push(image);
-    })
+    let images = getImagesB64(results.rows)
     
     response.status(200).json(images)
   })
@@ -70,9 +64,18 @@ const getCollectionById = (request, response) => {
   })
 }
 
-function getImageB64(filename){
-  return fileSystem.getFile(filename);
+function getImagesB64(bdImages){
+  let images = [];
+  bdImages.forEach(image=>{
+      let b64str = fileSystem.getB64(image.file_name);
+      // attribute "b64" of the object "image" setted to the b64 string
+      image.b64 = b64str;
+      images.push(image);
+    })
+  return images
 }
+
+
 
 module.exports = {
   getImages,
