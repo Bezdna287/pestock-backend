@@ -5,6 +5,7 @@ const app = express()
 const apiName = '/pestock'
 const apiPort = 3000
 const db = require('./database/queries')
+const fileSystem = require('./filesystem')
 
 const origins = [
     "http://localhost:4200",
@@ -31,6 +32,8 @@ app.get(apiName+'/collections/:idCollection', db.getCollectionById)
 app.get(apiName+'/collection/:idCollection', db.getImagesByCollection)
 
 app.get(apiName+'/daigua', (req, res) => {
+    
+    fileSystem.readDirectory('./images');
     res.send('TEDICHOKEDAIWA')
 })
 
