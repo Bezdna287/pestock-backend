@@ -30,9 +30,9 @@ const getImageById = (request, response) => {
 }
 
 const getImageByFileName = (request, response) => {
-  const fileName = request.query.file_name
-  
-  pool.query('SELECT * FROM images WHERE "file_name" like $1',[fileName], (error, results) => {
+  const fileNames = request.query.file_name.split(',').map(each=>'\''+each+'\'').join(',')
+  console.log(fileNames)
+  pool.query('SELECT * FROM images WHERE "file_name" in ('+fileNames+')', (error, results) => {
     if (error) {
       throw error
     }
