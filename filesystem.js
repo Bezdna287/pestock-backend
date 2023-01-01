@@ -1,5 +1,4 @@
 const fs = require('fs');
-// import fs from 'fs';
 
 const getB64 = (fileName)=>{
     return fs.readFileSync('images/'+fileName,'base64',(err,data)=>{

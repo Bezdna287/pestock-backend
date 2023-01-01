@@ -29,6 +29,19 @@ const getImageById = (request, response) => {
   })
 }
 
+const getImageByFileName = (request, response) => {
+  const fileName = request.query.file_name
+  
+  pool.query('SELECT * FROM images WHERE "file_name" like $1',[fileName], (error, results) => {
+    if (error) {
+      throw error
+    }
+    let image = getImagesB64(results.rows)
+    
+    response.status(200).json(image)
+  })
+}
+
 const getImagesByCollection = (request, response) => {
   const idCollection = parseInt(request.params.idCollection)
 
@@ -37,7 +50,7 @@ const getImagesByCollection = (request, response) => {
       console.log(error)
       throw error
     }
-    // console.log(results.rows)
+    // instead of returning raw image array from BD, the b64 string gets added to each image
     let images = getImagesB64(results.rows)
     
     response.status(200).json(images)
@@ -80,6 +93,7 @@ function getImagesB64(bdImages){
 module.exports = {
   getImages,
   getImageById,
+  getImageByFileName,
   getCollections,
   getCollectionById,
   getImagesByCollection

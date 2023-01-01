@@ -22,13 +22,15 @@ app.get(apiName+'/images', db.getImages)
 
 app.get(apiName+'/images/:id', db.getImageById)
 
+app.get(apiName+'/image', db.getImageByFileName)
+
 app.get(apiName+'/collections', db.getCollections)
 
 app.get(apiName+'/collections/:idCollection', db.getCollectionById)
 
 app.get(apiName+'/collection/:idCollection', db.getImagesByCollection)
 
-app.get('/daigua', (req, res) => {
+app.get(apiName+'/daigua', (req, res) => {
     res.send('TEDICHOKEDAIWA')
 })
 
