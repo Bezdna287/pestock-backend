@@ -19,8 +19,8 @@ const readDirectory = (dir) => {
   let files = fs.readdirSync(dir)
   // console.log(files)
 
-  // let promises = files.map(file => parseFile(path.join(dir, file))) // gives an array of promises for each file
-  // Promise.all(promises).then()
+  let promises = files.map(file => parseFile(path.join(dir, file))) // gives an array of promises for each file
+  Promise.all(promises).then()
 
   return files;
 
@@ -39,8 +39,12 @@ function parseFile(filePath) {
         expanded: false,
         includeUnknown: false
       });
-      // console.log('file '+filePath)
+      console.log('---------')
+      console.log('path: '+filePath)
+      console.log('keywords: '+tags.subject?.description)
+      console.log('title: '+tags.ImageDescription?.description)
       // console.log(tags)
+      
       // resolve()
     })
   })

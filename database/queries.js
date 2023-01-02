@@ -42,13 +42,27 @@ const getImageByFileName = (request, response) => {
   })
 }
 
-
-async function countImagesByFileName(file_name) {
-  const fileNames = file_name.split(',').map(each=>'\''+each+'\'').join(',')
+async function countImagesByFileName(fileName) {
+  const fileNames = fileName.split(',').map(each=>'\''+each+'\'').join(',')
   
   let result = await pool.query('SELECT count(1) FROM images WHERE "file_name" in ('+fileNames+')')
 
   return result.rows[0].count
+}
+
+async function insertImage(fileName){
+  const metadata = await getMetadata(fileName);
+
+  let result =  await pool.query('INSERT into images (title, keywords, id_collection, height, width, date_publish, download, file_name) VALUES ('+metadata+') RETURNING *');
+  
+  console.log(result)
+  
+  return result.rows;
+}
+
+async function getMetadata(fileName){
+  // let title = 
+  return {}
 }
 
 const handleCount = (error, results) => {
@@ -114,9 +128,8 @@ function getImagesB64(bdImages){
   return images
 }
 
-
-
 module.exports = {
+  insertImage,
   getImages,
   getImageById,
   getImageByFileName,
