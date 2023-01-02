@@ -31,20 +31,23 @@ app.get(apiName+'/collections/:idCollection', db.getCollectionById)
 
 app.get(apiName+'/collection/:idCollection', db.getImagesByCollection)
 
-app.get(apiName+'/daigua', (req, res) => {
+app.get(apiName+'/sync', (req, res) => {
     let dir = req.query.dir;
-    let fileNames = fileSystem.readDirectory('./'+dir);
-
+    let fileNames = fileSystem.readDirectory('./images/'+dir);
+    console.log('parsing files '+fileNames+' from dir '+dir);
+    
+    let inserted = [];
     fileNames.forEach(async fileName=>{
         let exists = await db.countImagesByFileName(fileName);
 
         if(exists == 0){
             console.log('file '+dir+'/'+fileName+' should be inserted')
-            await db.insertImage(dir+'/'+fileName);
+            inserted.push(await db.insertImage(dir+'/'+fileName));
         }
     })
+    let status = 'Inserted '+inserted.length+' new images'
 
-    res.send('TEDICHOKEDAIWA')
+    res.status(200).json({message: status, response:inserted})
 })
 
 

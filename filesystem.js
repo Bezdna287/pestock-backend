@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const iptc = require('node-iptc')
 const ExifReader = require('exifreader')
+const moment = require('moment');
 
 const getB64 = (fileName) => {
   return fs.readFileSync('images/' + fileName, 'base64', (err, data) => {
@@ -29,7 +30,7 @@ const readDirectory = (dir) => {
 
 async function parseFile(filePath) {
   
-  let data = fs.readFileSync(filePath);
+  let data = fs.readFileSync('./images/'+filePath);
   const tags = ExifReader.load(Buffer.from(data, 'binary'), {
     expanded: false,
     includeUnknown: false
@@ -45,12 +46,12 @@ async function parseFile(filePath) {
   // console.log(tags);
 
   return { 
-    title: tags.ImageDescription?.description,
-    keywords: tags.subject?.description,
+    title: tags.ImageDescription?.description ? tags.ImageDescription?.description : 'Dummy title (it was empty)',
+    keywords: tags.subject?.description ? tags.subject?.description : 'key00, key01, key02, key03, key04 (it was empty)',
     id_collection: collection,
     height: 0,
     width: 0,
-    date_publish: Date.now(),
+    date_publish: moment(Date.now()).format('DD/MM/yyyy'),
     download: 0,
     file_name: fileName
     };

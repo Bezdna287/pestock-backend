@@ -20,6 +20,7 @@
     "pg-promise": "^10.12.1"
   },
   "devDependencies": {
+    "moment": "^2.29.4",
     "node-iptc": "^1.0.5"
   }
 }

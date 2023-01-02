@@ -41,7 +41,7 @@ const getImageByFileName = (request, response) => {
     response.status(200).json(image)
   })
 }
-
+// THIS SHOULD ALSO COUNT BY COLLECTION: same filename SHOULD be allowed in different collections?
 async function countImagesByFileName(fileName) {
   const fileNames = fileName.split(',').map(each=>'\''+each+'\'').join(',')
   
@@ -52,32 +52,19 @@ async function countImagesByFileName(fileName) {
 
 async function insertImage(filePath){
   const parsedImage = await fileSystem.parseFile(filePath)
-
-  console.log(parsedImage)
-  // let result =  await pool.query('INSERT into images (title, keywords, id_collection, height, width, date_publish, download, file_name) VALUES ('+parsedImage+') RETURNING *');
   
-  // console.log(result)
+  parsedImage.id_collection = await getIdCollectionByName(parsedImage.id_collection)
+
+  // console.log(parsedImage)
+  
+  let result =  await pool.query('INSERT into images (id,title, keywords, id_collection, height, width, date_publish, download, file_name) VALUES (nextval(\'images_id\'),$1,$2,$3,$4,$5,$6,$7,$8) RETURNING *',Object.values(parsedImage));
+  
+  console.log('inserted: ')
+  console.log(result.rows)
   
   // return result.rows;
 }
 
-
-const handleCount = (error, results) => {
-  if (error) {
-    throw error
-  }
-  count = results.rows[0].count
-  
-  if(count == 0){
-    //image doesnt exist, should insert
-    // let metadata = getMetadata()
-    
-    // pool.query('INSERT into images (id, title, keywords, id_collection, height, width, date_publish, download, file_name) VALUES', [metadata], (error, result)=>{
-
-    // })
-  }
-
-}
 
 const getImagesByCollection = (request, response) => {
   const idCollection = parseInt(request.params.idCollection)
@@ -114,9 +101,10 @@ const getCollectionById = (request, response) => {
   })
 }
 
-async function getCollectionByName(name){
-  let collection = await pool.query('SELECT * FROM collections WHERE name = $1', [name]);
-  return collection;
+async function getIdCollectionByName(name){
+  
+  let collection = await pool.query('SELECT * FROM collections WHERE name like $1', [name]);
+  return collection.rows[0].id;
 }
 
 function getImagesB64(bdImages){
