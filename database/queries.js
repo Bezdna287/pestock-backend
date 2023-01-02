@@ -1,5 +1,5 @@
 const fileSystem = require('../filesystem')
-
+const iptc = require('node-iptc')
 const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'postgres',
@@ -31,7 +31,7 @@ const getImageById = (request, response) => {
 
 const getImageByFileName = (request, response) => {
   const fileNames = request.query.file_name.split(',').map(each=>'\''+each+'\'').join(',')
-  console.log(fileNames)
+  // console.log(fileNames)
   pool.query('SELECT * FROM images WHERE "file_name" in ('+fileNames+')', (error, results) => {
     if (error) {
       throw error
@@ -40,6 +40,32 @@ const getImageByFileName = (request, response) => {
     
     response.status(200).json(image)
   })
+}
+
+
+async function countImagesByFileName(file_name) {
+  const fileNames = file_name.split(',').map(each=>'\''+each+'\'').join(',')
+  
+  let result = await pool.query('SELECT count(1) FROM images WHERE "file_name" in ('+fileNames+')')
+
+  return result.rows[0].count
+}
+
+const handleCount = (error, results) => {
+  if (error) {
+    throw error
+  }
+  count = results.rows[0].count
+  
+  if(count == 0){
+    //image doesnt exist, should insert
+    // let metadata = getMetadata()
+    
+    // pool.query('INSERT into images (id, title, keywords, id_collection, height, width, date_publish, download, file_name) VALUES', [metadata], (error, result)=>{
+
+    // })
+  }
+
 }
 
 const getImagesByCollection = (request, response) => {
@@ -94,6 +120,7 @@ module.exports = {
   getImages,
   getImageById,
   getImageByFileName,
+  countImagesByFileName,
   getCollections,
   getCollectionById,
   getImagesByCollection
