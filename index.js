@@ -35,7 +35,9 @@ app.get(apiName+'/sync', (req, res) => {
     let dir = req.query.dir;
     let fileNames = fileSystem.readDirectory('./images/'+dir);
     let numFiles = fileNames.length
-    console.log('parsing '+numFiles+' files: '+fileNames+' from dir '+dir);
+    console.log('\nTriggered Filesystem-Database Syncronization:\n');
+
+    console.log('\tparsing '+numFiles+' files: '+fileNames+' from folder \''+dir+'\':\n');
     
     let inserted = [];
     let processed = 0;
@@ -44,16 +46,16 @@ app.get(apiName+'/sync', (req, res) => {
         let exists = await db.countImagesByFileName(fileName);
 
         if(exists == 0){
-            console.log('file '+dir+'/'+fileName+' should be inserted')
+            console.log('\tfile '+dir+'/'+fileName+' is new, will be added to database')
             inserted.push(await db.insertImage(dir+'/'+fileName));
         }
         processed++;
         if(processed == numFiles){
-            let status = 'Inserted '+inserted.length+' new images'
+            let status = inserted.length+' new images inserted'
 
-            console.log(status)
-            console.log(inserted)
-            
+            console.log('\n\t'+status)
+            // console.log(inserted)
+
             res.status(200).json({message: status, response:inserted})
         }
     });

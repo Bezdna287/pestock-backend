@@ -30,27 +30,24 @@ const readDirectory = (dir) => {
 
 async function parseFile(filePath) {
   
-  let data = fs.readFileSync('./images/'+filePath);
-  const tags = ExifReader.load(Buffer.from(data, 'binary'), {
+  let dataBuffer = fs.readFileSync('./images/'+filePath);
+  const tags = ExifReader.load(Buffer.from(dataBuffer, 'binary'), {
     expanded: false,
     includeUnknown: false
   });
   
   let collection = filePath.split('/')[0];
   let fileName = filePath.split('/')[1];
-  // console.log('collection: ' + collection)
-  // console.log('fileName: ' + fileName)
-  // console.log('keywords: ' + tags.subject?.description)
-  // console.log('title: ' + tags.ImageDescription?.description)
-  // console.log('---------')
+   
   // console.log(tags);
+  // console.log('---------------------------------------------------------------------')
 
   return { 
     title: tags.ImageDescription?.description ? tags.ImageDescription?.description : 'Dummy title (it was empty)',
     keywords: tags.subject?.description ? tags.subject?.description : 'key00, key01, key02, key03, key04 (it was empty)',
     id_collection: collection,
-    height: 0,
-    width: 0,
+    height: tags['Image Height']?.value,
+    width: tags['Image Width']?.value,
     date_publish: moment(Date.now()).format('DD/MM/yyyy'),
     download: 0,
     file_name: fileName
