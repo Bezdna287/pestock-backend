@@ -58,11 +58,8 @@ async function insertImage(filePath){
   // console.log(parsedImage)
   
   let result =  await pool.query('INSERT into images (id,title, keywords, id_collection, height, width, date_publish, download, file_name) VALUES (nextval(\'images_id\'),$1,$2,$3,$4,$5,$6,$7,$8) RETURNING *',Object.values(parsedImage));
-  
-  console.log('inserted: ')
-  console.log(result.rows)
-  
-  // return result.rows;
+    
+  return result.rows[0];
 }
 
 

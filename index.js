@@ -34,9 +34,12 @@ app.get(apiName+'/collection/:idCollection', db.getImagesByCollection)
 app.get(apiName+'/sync', (req, res) => {
     let dir = req.query.dir;
     let fileNames = fileSystem.readDirectory('./images/'+dir);
-    console.log('parsing files '+fileNames+' from dir '+dir);
+    let numFiles = fileNames.length
+    console.log('parsing '+numFiles+' files: '+fileNames+' from dir '+dir);
     
     let inserted = [];
+    let processed = 0;
+    
     fileNames.forEach(async fileName=>{
         let exists = await db.countImagesByFileName(fileName);
 
@@ -44,10 +47,17 @@ app.get(apiName+'/sync', (req, res) => {
             console.log('file '+dir+'/'+fileName+' should be inserted')
             inserted.push(await db.insertImage(dir+'/'+fileName));
         }
-    })
-    let status = 'Inserted '+inserted.length+' new images'
+        processed++;
+        if(processed == numFiles){
+            let status = 'Inserted '+inserted.length+' new images'
 
-    res.status(200).json({message: status, response:inserted})
+            console.log(status)
+            console.log(inserted)
+            
+            res.status(200).json({message: status, response:inserted})
+        }
+    });
+    
 })
 
 
