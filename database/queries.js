@@ -50,20 +50,17 @@ async function countImagesByFileName(fileName) {
   return result.rows[0].count
 }
 
-async function insertImage(fileName){
-  const metadata = await getMetadata(fileName);
+async function insertImage(filePath){
+  const parsedImage = await fileSystem.parseFile(filePath)
 
-  let result =  await pool.query('INSERT into images (title, keywords, id_collection, height, width, date_publish, download, file_name) VALUES ('+metadata+') RETURNING *');
+  console.log(parsedImage)
+  // let result =  await pool.query('INSERT into images (title, keywords, id_collection, height, width, date_publish, download, file_name) VALUES ('+parsedImage+') RETURNING *');
   
-  console.log(result)
+  // console.log(result)
   
-  return result.rows;
+  // return result.rows;
 }
 
-async function getMetadata(fileName){
-  // let title = 
-  return {}
-}
 
 const handleCount = (error, results) => {
   if (error) {
@@ -115,6 +112,11 @@ const getCollectionById = (request, response) => {
     }
     response.status(200).json(results.rows)
   })
+}
+
+async function getCollectionByName(name){
+  let collection = await pool.query('SELECT * FROM collections WHERE name = $1', [name]);
+  return collection;
 }
 
 function getImagesB64(bdImages){

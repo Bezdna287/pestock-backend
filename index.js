@@ -32,16 +32,15 @@ app.get(apiName+'/collections/:idCollection', db.getCollectionById)
 app.get(apiName+'/collection/:idCollection', db.getImagesByCollection)
 
 app.get(apiName+'/daigua', (req, res) => {
-    
-    let fileNames = fileSystem.readDirectory('./images');
+    let dir = req.query.dir;
+    let fileNames = fileSystem.readDirectory('./'+dir);
 
     fileNames.forEach(async fileName=>{
-        
         let exists = await db.countImagesByFileName(fileName);
 
-        if(!exists){
-            console.log('file '+fileName+' should be created')
-            await db.insertImage(fileName);
+        if(exists == 0){
+            console.log('file '+dir+'/'+fileName+' should be inserted')
+            await db.insertImage(dir+'/'+fileName);
         }
     })
 

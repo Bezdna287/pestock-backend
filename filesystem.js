@@ -18,36 +18,42 @@ const readDirectory = (dir) => {
 
   let files = fs.readdirSync(dir)
   // console.log(files)
-
-  let promises = files.map(file => parseFile(path.join(dir, file))) // gives an array of promises for each file
-  Promise.all(promises).then()
-
   return files;
 
 }
-function parseFile(filePath) {
-  let content
-  let output = new Promise((resolve, reject) => {
-    fs.readFile(filePath, function (err, data) {
-      if (err) reject(err)
 
-      content = data.toString().split(/(?:\r\n|\r|\n)/g).map(function (line) {
-        return line.trim()
-      }).filter(Boolean)
+// const parseFiles = (files)=>{
+//   let promises = files.map(file => parseFile(path.join(dir, file))) // gives an array of promises for each file
+//   Promise.all(promises).then()
+// }
 
-      const tags = ExifReader.load(Buffer.from(data, 'binary'), {
-        expanded: false,
-        includeUnknown: false
-      });
-      console.log('---------')
-      console.log('path: '+filePath)
-      console.log('keywords: '+tags.subject?.description)
-      console.log('title: '+tags.ImageDescription?.description)
-      // console.log(tags)
-      
-      // resolve()
-    })
-  })
-  return output
+async function parseFile(filePath) {
+  
+  let data = fs.readFileSync(filePath);
+  const tags = ExifReader.load(Buffer.from(data, 'binary'), {
+    expanded: false,
+    includeUnknown: false
+  });
+  
+  let collection = filePath.split('/')[0];
+  let fileName = filePath.split('/')[1];
+  // console.log('collection: ' + collection)
+  // console.log('fileName: ' + fileName)
+  // console.log('keywords: ' + tags.subject?.description)
+  // console.log('title: ' + tags.ImageDescription?.description)
+  // console.log('---------')
+  // console.log(tags);
+
+  return { 
+    title: tags.ImageDescription?.description,
+    keywords: tags.subject?.description,
+    id_collection: collection,
+    height: 0,
+    width: 0,
+    date_publish: Date.now(),
+    download: 0,
+    file_name: fileName
+    };
+
 }
-module.exports = { getB64, readDirectory }
+module.exports = { getB64, readDirectory,parseFile }
