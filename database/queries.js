@@ -1,5 +1,5 @@
 const fileSystem = require('../filesystem')
-const iptc = require('node-iptc')
+
 const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'postgres',
@@ -9,14 +9,21 @@ const pool = new Pool({
   port: 4000,
 })
 
-const getImages = (request, response) => {
-  pool.query('SELECT * FROM images ORDER BY id ASC', (error, results) => {
-    if (error) {
-      throw error
-    }
-    response.status(200).json(results.rows)
-  })
+
+async function getImages(){
+  let result = await pool.query('SELECT * FROM images ORDER BY id ASC').catch(err);
+  console.log(result.rows)
+  return result.rows;
 }
+
+// const getImages = (request, response) => {
+//   pool.query('SELECT * FROM images ORDER BY id ASC', (error, results) => {
+//     if (error) {
+//       throw error
+//     }
+//     response.status(200).json(results.rows)
+//   })
+// }
 
 const getImageById = (request, response) => {
   const id = parseInt(request.params.id)

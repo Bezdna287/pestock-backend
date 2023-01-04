@@ -6,6 +6,7 @@ const apiName = '/pestock'
 const apiPort = 3000
 const db = require('./database/queries')
 const fileSystem = require('./filesystem')
+const service = require('./service')
 
 const origins = [
     "http://localhost:4200",
@@ -19,7 +20,7 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-app.get(apiName+'/images', db.getImages)
+app.get(apiName+'/images', service.findAllImages)
 
 app.get(apiName+'/images/:id', db.getImageById)
 
