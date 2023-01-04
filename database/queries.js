@@ -11,43 +11,21 @@ const pool = new Pool({
 
 
 async function getImages(){
-  let result = await pool.query('SELECT * FROM images ORDER BY id ASC').catch(err);
-  console.log(result.rows)
+  let result = await pool.query('SELECT * FROM images ORDER BY id ASC').catch(err=>console.log(err));
   return result.rows;
 }
 
-// const getImages = (request, response) => {
-//   pool.query('SELECT * FROM images ORDER BY id ASC', (error, results) => {
-//     if (error) {
-//       throw error
-//     }
-//     response.status(200).json(results.rows)
-//   })
-// }
-
-const getImageById = (request, response) => {
-  const id = parseInt(request.params.id)
-
-  pool.query('SELECT * FROM images WHERE id = $1', [id], (error, results) => {
-    if (error) {
-      throw error
-    }
-    response.status(200).json(results.rows)
-  })
+async function getImageById(id){
+  let result =  await pool.query('SELECT * FROM images WHERE id = $1', [id]).catch(err=>console.log(err));
+  return result.rows;
 }
 
-const getImageByFileName = (request, response) => {
-  const fileNames = request.query.file_name.split(',').map(each=>'\''+each+'\'').join(',')
-  // console.log(fileNames)
-  pool.query('SELECT * FROM images WHERE "file_name" in ('+fileNames+')', (error, results) => {
-    if (error) {
-      throw error
-    }
-    let image = getImagesB64(results.rows)
-    
-    response.status(200).json(image)
-  })
+async function getImagesByFileNames(fileNames){
+  let result = await pool.query('SELECT * FROM images WHERE "file_name" = ANY($1)',[fileNames]).catch(err=>console.log(err));
+  return result.rows;
 }
+
+
 // THIS SHOULD ALSO COUNT BY COLLECTION: same filename SHOULD be allowed in different collections?
 async function countImagesByFileName(fileName) {
   const fileNames = fileName.split(',').map(each=>'\''+each+'\'').join(',')
@@ -60,7 +38,7 @@ async function countImagesByFileName(fileName) {
 async function insertImage(filePath){
   const parsedImage = await fileSystem.parseFile(filePath)
   
-  parsedImage.id_collection = await getIdCollectionByName(parsedImage.id_collection)
+  parsedImage.id_collection = await getCollectionByName(parsedImage.id_collection).id
 
   // console.log(parsedImage)
   
@@ -94,41 +72,25 @@ const getCollections = (request, response) => {
   })
 }
 
-const getCollectionById = (request, response) => {
-  const idCollection = parseInt(request.params.idCollection)
-
-  pool.query('SELECT * FROM collections WHERE id = $1', [idCollection], (error, results) => {
-    if (error) {
-      throw error
-    }
-    response.status(200).json(results.rows)
-  })
-}
-
-async function getIdCollectionByName(name){
-  
+async function getCollectionByName(name){
   let collection = await pool.query('SELECT * FROM collections WHERE name like $1', [name]);
-  return collection.rows[0].id;
+  return collection.rows[0];
 }
 
-function getImagesB64(bdImages){
-  let images = [];
-  bdImages.forEach(image=>{
-      let b64str = fileSystem.getB64(image.file_name);
-      // attribute "b64" of the object "image" setted to the b64 string
-      image.b64 = b64str;
-      images.push(image);
-    })
-  return images
+async function getCollectionById(id){
+  let collection = await pool.query('SELECT * FROM collections WHERE id = $1', [id]);
+  return collection.rows[0];
 }
+
 
 module.exports = {
   insertImage,
   getImages,
   getImageById,
-  getImageByFileName,
+  getImagesByFileNames,
   countImagesByFileName,
   getCollections,
   getCollectionById,
+  getCollectionByName,
   getImagesByCollection
 }

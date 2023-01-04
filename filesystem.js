@@ -4,23 +4,18 @@ const iptc = require('node-iptc')
 const ExifReader = require('exifreader')
 const moment = require('moment');
 
-/* read file from "filePath" and returns base64 string representation*/
-const getB64 = (filePath) => {
-  return fs.readFileSync('images/' + filePath, 'base64', (err, data) => {
-    if (err) {
-      console.log(err)
-      throw err;
-    }
-    const b64String = Buffer.from(data, 'binary').toString('base64');
-    return b64String.toString();
-  });
+/* Reads file from "filePath" and returns base64 string representation*/
+async function getB64(filePath){
+  let data = fs.readFileSync('images/' + filePath, 'base64');
+  const b64String = Buffer.from(data, 'binary').toString();
+  return b64String;
 }
 
-/* returns array with all file names contained in directory "path"*/
+/* Returns array with all file names contained in directory "path"*/
 const readDirectory = (path) => fs.readdirSync(path);
 
 
-/* reads file from "filePath" and parses file metadata.
+/* Reads file from "filePath" and parses file metadata and
    returns image data structure following DB object model */
 async function parseFile(filePath) {
   

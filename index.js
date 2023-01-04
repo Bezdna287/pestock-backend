@@ -20,11 +20,11 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-app.get(apiName+'/images', service.findAllImages)
+app.get(apiName+'/images/all', service.findAllImages)
 
-app.get(apiName+'/images/:id', db.getImageById)
+app.get(apiName+'/images/:id', service.findImageById)
 
-app.get(apiName+'/image', db.getImageByFileName)
+app.get(apiName+'/images', service.findImagesByFileNames)
 
 app.get(apiName+'/collections', db.getCollections)
 
