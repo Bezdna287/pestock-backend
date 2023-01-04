@@ -24,8 +24,9 @@ async function findImagesByFileNames(req,res){
     returns parsed images with base64 string representation*/
 async function getImagesB64(bdImages){
     return await Promise.all(bdImages.map(async image=>{
-        const collection = await queries.getCollectionById(image.id_collection);
-        image.b64 = await fileSystem.getB64(collection.name+'/'+image.file_name);
+        const collectionName = await queries.getCollectionNameById(image.id_collection);
+
+        image.b64 = await fileSystem.getB64(collectionName+'/'+image.file_name);
         return image
     }));
 }

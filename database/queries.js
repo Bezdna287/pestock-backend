@@ -37,10 +37,10 @@ async function countImagesByFileName(fileName) {
 
 async function insertImage(filePath){
   const parsedImage = await fileSystem.parseFile(filePath)
-  
-  parsedImage.id_collection = await getCollectionByName(parsedImage.id_collection).id
+  console.log(parsedImage.id_collection)
+  parsedImage.id_collection = await getCollectionIdByName(parsedImage.id_collection)
 
-  // console.log(parsedImage)
+ 
   
   let result =  await pool.query('INSERT into images (id,title, keywords, id_collection, height, width, date_publish, download, file_name) VALUES (nextval(\'images_id\'),$1,$2,$3,$4,$5,$6,$7,$8) RETURNING *',Object.values(parsedImage));
     
@@ -72,14 +72,21 @@ const getCollections = (request, response) => {
   })
 }
 
-async function getCollectionByName(name){
-  let collection = await pool.query('SELECT * FROM collections WHERE name like $1', [name]);
-  return collection.rows[0];
-}
-
 async function getCollectionById(id){
   let collection = await pool.query('SELECT * FROM collections WHERE id = $1', [id]);
   return collection.rows[0];
+}
+
+async function getCollectionIdByName(name){
+  let collection = await pool.query('SELECT * FROM collections WHERE name like $1', [name]);
+  return collection.rows[0].id;
+}
+
+async function getCollectionNameById(id){
+  console.log(id)
+  let collection = await pool.query('SELECT * FROM collections WHERE id = $1', [id]);
+  console.log(collection.rows[0].name)
+  return collection.rows[0].name;
 }
 
 
@@ -91,6 +98,7 @@ module.exports = {
   countImagesByFileName,
   getCollections,
   getCollectionById,
-  getCollectionByName,
+  getCollectionIdByName,
+  getCollectionNameById,
   getImagesByCollection
 }
