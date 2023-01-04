@@ -20,6 +20,8 @@ async function findImagesByFileNames(req,res){
     res.status(200).json(imageB64);
 }
 
+/* Reads collection names and fileNames from BD and
+    returns parsed images with base64 string representation*/
 async function getImagesB64(bdImages){
     return await Promise.all(bdImages.map(async image=>{
         const collection = await queries.getCollectionById(image.id_collection);
@@ -27,6 +29,5 @@ async function getImagesB64(bdImages){
         return image
     }));
 }
-
 
 module.exports = { findAllImages, findImageById,findImagesByFileNames }
