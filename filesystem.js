@@ -1,6 +1,4 @@
 const fs = require('fs');
-const path = require('path');
-const iptc = require('node-iptc')
 const ExifReader = require('exifreader')
 const moment = require('moment');
 
@@ -13,7 +11,6 @@ async function getB64(filePath){
 
 /* Returns array with all file names contained in directory "path"*/
 const readDirectory = (path) => fs.readdirSync(path);
-
 
 /* Reads file from "filePath" and parses file metadata and
    returns image data structure following DB object model */
@@ -42,6 +39,6 @@ async function parseFile(filePath) {
     download: 0,
     file_name: fileName
     };
-
 }
+
 module.exports = { getB64, readDirectory,parseFile }
