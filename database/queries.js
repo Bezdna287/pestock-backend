@@ -9,7 +9,6 @@ const pool = new Pool({
   port: 4000,
 })
 
-
 async function getImages(){
   let result = await pool.query('SELECT * FROM images ORDER BY id ASC').catch(err=>console.log(err));
   return result.rows;
@@ -25,7 +24,6 @@ async function getImagesByFileNames(fileNames){
   return result.rows;
 }
 
-
 // THIS SHOULD ALSO COUNT BY COLLECTION: same filename SHOULD be allowed in different collections?
 async function countImagesByFileName(fileName) {
   const fileNames = fileName.split(',').map(each=>'\''+each+'\'').join(',')
@@ -37,39 +35,22 @@ async function countImagesByFileName(fileName) {
 
 async function insertImage(filePath){
   const parsedImage = await fileSystem.parseFile(filePath)
-  console.log(parsedImage.id_collection)
-  parsedImage.id_collection = await getCollectionIdByName(parsedImage.id_collection)
-
  
+  parsedImage.id_collection = await getCollectionIdByName(parsedImage.id_collection)
   
   let result =  await pool.query('INSERT into images (id,title, keywords, id_collection, height, width, date_publish, download, file_name) VALUES (nextval(\'images_id\'),$1,$2,$3,$4,$5,$6,$7,$8) RETURNING *',Object.values(parsedImage));
     
   return result.rows[0];
 }
 
-
-const getImagesByCollection = (request, response) => {
-  const idCollection = parseInt(request.params.idCollection)
-
-  pool.query('SELECT * FROM images WHERE id_collection = $1', [idCollection], (error, results) => {
-    if (error) {
-      console.log(error)
-      throw error
-    }
-    // instead of returning raw image array from BD, the b64 string gets added to each image
-    let images = getImagesB64(results.rows)
-    
-    response.status(200).json(images)
-  })
+async function getImagesByCollection(idCollection){
+  let images = await pool.query('SELECT * FROM images WHERE id_collection = $1', [idCollection]);
+  return images.rows;
 }
 
-const getCollections = (request, response) => {
-  pool.query('SELECT * FROM collections ORDER BY id ASC', (error, results) => {
-    if (error) {
-      throw error
-    }
-    response.status(200).json(results.rows)
-  })
+async function getCollections(){
+  let collections = await pool.query('SELECT * FROM collections ORDER BY id ASC');
+  return collections.rows;
 }
 
 async function getCollectionById(id){
@@ -83,12 +64,9 @@ async function getCollectionIdByName(name){
 }
 
 async function getCollectionNameById(id){
-  console.log(id)
   let collection = await pool.query('SELECT * FROM collections WHERE id = $1', [id]);
-  console.log(collection.rows[0].name)
   return collection.rows[0].name;
 }
-
 
 module.exports = {
   insertImage,
