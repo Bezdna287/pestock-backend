@@ -3,7 +3,7 @@ const fileSystem = require('../filesystem')
 const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'postgres',
-  host: 'localhost',
+  host: /*'localhost' para local, para docker:*/'postgresqlserver',
   database: 'postgres',
   password: 'Cashimba01',
   port: 4000,

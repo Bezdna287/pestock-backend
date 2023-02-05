@@ -6,9 +6,11 @@ services:
     working_dir: /app
     volumes:
       - D:\desarrollo\express\pestock-backend\images:/app/images
-  db:
-    image: postgres
+  postgresqlserver:
+    image: postgresql
     restart: always
+    ports:
+      - 4000:4000
     volumes:
       - postgresqldata:/var/lib/postgresql/data
     environment:
