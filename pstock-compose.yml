@@ -1,0 +1,21 @@
+services:
+  pstock-backend:
+    image: pstock-backend:0.0.1
+    command:
+    ports:
+      - 3000:3000
+    working_dir: /app
+    volumes:
+      - 'D:\desarrollo\express\pestock-backend\images':/app/images
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - postgresqldata:/var/lib/postgresql/data
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_PASSWORD: Cashimba01
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+  volumes:
+    todo-mysql-data:
