@@ -3,10 +3,10 @@ const fileSystem = require('../filesystem')
 const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'postgres',
-  host: /*'localhost' para local, para docker:*/'postgresqlserver',
+  host: 'pestock-backend-laputabasededatos-1',
   database: 'postgres',
   password: 'Cashimba01',
-  port: 4000,
+  port: 5432,
 })
 
 async function getImages(){

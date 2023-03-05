@@ -6,8 +6,6 @@ services:
     working_dir: /app
     volumes:
       - D:\desarrollo\express\pestock-backend\images:/app/images
-    networks:
-       - laputared
   laputabasededatos:
     image: postgres
     restart: always
@@ -18,8 +16,3 @@ services:
     environment:
       POSTGRES_PASSWORD: Cashimba01
       POSTGRES_USER: postgres
-    networks:
-       - laputared
-networks:
-  laputared:
-    driver: bridge
