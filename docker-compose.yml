@@ -2,10 +2,15 @@ services:
   pstock-backend:
     image: pstock-backend:0.0.1
     ports:
-      - 3000:3000
+      - 3000:3001
     working_dir: /app
     volumes:
       - D:\desarrollo\express\pestock-backend\images:/app/images
+    environment:
+      PORT: 3001
+      ORIGINS: http://localhost:4200
+      DBHOST: pestock-backend-laputabasededatos-1
+      DBPORT: 5432
     networks:
        - laputared
   laputabasededatos:
@@ -18,6 +23,7 @@ services:
     environment:
       POSTGRES_PASSWORD: Cashimba01
       POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
     networks:
        - laputared
 networks:

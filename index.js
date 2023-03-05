@@ -1,15 +1,14 @@
+require('dotenv').config();
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
 const apiName = '/pestock'
-const apiPort = 3000
-const db = require('./database/queries')
-const fileSystem = require('./filesystem')
+const apiPort = process.env.PORT || 3000
 const service = require('./service')
 
 const origins = [
-    "http://localhost:4200",
+    process.env.ORIGINS || "http://localhost:4200",
 ]
 
 app.use(bodyParser.urlencoded({ extended: true }))

@@ -13,4 +13,4 @@ COPY . .
 
 CMD [ "npm", "run", "serve" ]
 
-EXPOSE 3000
+EXPOSE 3001

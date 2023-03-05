@@ -1,12 +1,14 @@
+require('dotenv').config();
+
 const fileSystem = require('../filesystem')
 
 const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'postgres',
-  host: 'pestock-backend-laputabasededatos-1',
+  host: process.env.DBHOST || 'localhost',
   database: 'postgres',
   password: 'Cashimba01',
-  port: 5432,
+  port: process.env.DBPORT || 4000,
 })
 
 async function getImages(){
