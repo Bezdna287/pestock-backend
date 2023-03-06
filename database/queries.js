@@ -50,6 +50,11 @@ async function getImagesByCollection(idCollection){
   return images.rows;
 }
 
+async function getImagesByKeywords(keywords){
+  let images = await pool.query('SELECT * FROM images WHERE keywords like ANY($1)', [keywords]);
+  return images.rows;
+}
+
 async function getCollections(){
   let collections = await pool.query('SELECT * FROM collections ORDER BY id ASC');
   return collections.rows;
@@ -80,5 +85,6 @@ module.exports = {
   getCollectionById,
   getCollectionIdByName,
   getCollectionNameById,
-  getImagesByCollection
+  getImagesByCollection, 
+  getImagesByKeywords
 }

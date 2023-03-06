@@ -46,6 +46,14 @@ async function findImageById(req,res){
     res.status(200).json(imageB64);
 }
 
+async function findImagesBy(req,res){
+    if(req.query.fileName){
+        await findImagesByFileNames(req,res)
+    }else if(req.query.keywords){
+        await findImagesByKeywords(req,res)
+    }
+}
+
 /* returns images from comma separated file names from param "fileName" */
 async function findImagesByFileNames(req,res){
     const fileNames = req.query.fileName.split(',');
@@ -53,6 +61,17 @@ async function findImagesByFileNames(req,res){
     let imageB64 = await getImagesB64(images);
     res.status(200).json(imageB64);
 }
+
+/* returns images from comma separated keywords from param "keywords" */
+async function findImagesByKeywords(req,res){
+    const keywords = req.query.keywords.split(',').map(each=>'%'+each+'%');
+    console.log(keywords)
+    let images = await queries.getImagesByKeywords(keywords);
+    //let imagesb64 = await getImagesB64(images);
+    console.log(images.length + ' images with selected keywords')
+    res.status(200).json(images);
+}
+
 
 /* Reads collection names and fileNames from BD and
     returns parsed images with base64 string representation*/
@@ -84,4 +103,5 @@ async function getImagesByCollection(req,res){
     res.status(200).json(imagesb64);
 }
 
-module.exports = { synchronize, findAllImages, findImageById, findImagesByFileNames, getCollections, getCollectionById, getImagesByCollection }
+
+module.exports = { synchronize, findAllImages, findImageById,findImagesBy, getCollections, getCollectionById, getImagesByCollection }
