@@ -75,11 +75,12 @@ async function findImagesByKeywords(req,res){
 
 /* Reads collection names and fileNames from BD and
     returns parsed images with base64 string representation*/
-async function getImagesB64(bdImages){
+async function getImagesB64(bdImages){ // maybe extra input arg to get /resized or /fullres ? 
     return await Promise.all(bdImages.map(async image=>{
         const collectionName = await queries.getCollectionNameById(image.id_collection);
 
-        image.b64 = await fileSystem.getB64(collectionName+'/'+image.file_name);
+        //maybe even just downscale only the requested images? sync is one-time but maybe the script every iteration makes everything too slow
+        image.b64 = await fileSystem.getB64(collectionName+'/'+image.file_name); // this path should be edited to get /resized images instead
         return image
     }));
 }
