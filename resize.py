@@ -6,14 +6,13 @@ import matplotlib.pyplot as plt
 def res(image):
     dim = None
     (h, w) = image.shape[:2]
-    # desired width, for now, is half the original
-    width = int(w/2)
+    # desired width, for now, is hardcoded right below
+    width = int(w/4)
     r = width / float(w)
     dim = (width, int(h * r))
     resized = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
 
     return resized
-
 
 
 parser = argparse.ArgumentParser("simple_example")

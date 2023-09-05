@@ -69,9 +69,9 @@ async function findImagesByKeywords(req,res){
     const keywords = req.query.keywords.split(',').map(each=>'%'+each+'%');
     console.log(keywords)
     let images = await queries.getImagesByKeywords(keywords);
-    //let imagesb64 = await getImagesB64(images);
-    console.log(images.length + ' images with selected keywords')
-    res.status(200).json(images);
+    let imagesb64 = await getImagesB64(images);
+    console.log(imagesb64.length + ' images with selected keywords')
+    res.status(200).json(imagesb64);
 }
 
 
@@ -81,7 +81,6 @@ async function getImagesB64(bdImages, resized = true){
     return await Promise.all(bdImages.map(async image=>{
         const collectionName = await queries.getCollectionNameById(image.id_collection);
 
-        console.log(collectionName+'/'+(resized ? 'resized/' : '')+image.file_name); 
         image.b64 = await fileSystem.getB64(collectionName+'/'+(resized ? 'resized/' : '')+image.file_name); 
         return image
     }));
@@ -98,7 +97,6 @@ async function getCollectionById(req,res){
     res.status(200).json(collection);
 }
 
-//TODO: BAS64 STRING TOO HEAVY. LOWER RESOLUTION IMAGES WILL BE BETTER TO TRANSFER
 async function getImagesByCollection(req,res){
     const idCollection = parseInt(req.params.idCollection);
     let images = await queries.getImagesByCollection(idCollection);
