@@ -1,3 +1,8 @@
 04/09/23:
 	-lets make a python script that resizes images and places them in analogous folders under /resized parent, for example
-	more notes inside getImagesB64 code
+	more notes inside getImagesB64 code--> done
+
+
+05/09/23:
+	-need to refine image resize, checking for already existing, etc
+	-can python run inside a node container?
