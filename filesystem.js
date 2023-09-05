@@ -11,7 +11,7 @@ async function getB64(filePath){
 }
 
 /* Returns array with all file names contained in directory "path"*/
-const readDirectory = (path) => fs.readdirSync(path);
+const readDirectory = (path) => fs.readdirSync(path, { withFileTypes: true });
 
 /* Reads file from "filePath" and parses file metadata and
    returns image data structure following DB object model */
@@ -44,27 +44,24 @@ async function parseFile(filePath) {
 async function resize(dir,fileNames){
   
   const python = spawn('python', ['resize.py', dir, fileNames]);
+  
+  console.log('\n\nStarting resize...\t')
 
   python.stdout.on('data', function (data) {
-    console.log('python stdout:\n' + data.toString());
+    console.log('\n\n\t' + data.toString());
 
   });
   python.on('close', (code) => {
-    console.log(`\tpython closed with code ${code}\n`);
+    console.log(`\tResize exited with code ${code}\n`);
+    if(code == 0){
+      return true;
+    }   
   });
 
   python.stderr.on('data', (data) => {
     console.log(`\tstderr: ${data}\n`);
-    // python.stdin.pause();
-    // python.kill();
+    return false;
   });
-
-  
-
-  // fileNames.forEach(async fileName=>{
-  
-  
-  // });
 }
 
 

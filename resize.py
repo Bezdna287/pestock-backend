@@ -14,13 +14,15 @@ def res(image):
 
     return resized
 
-print("vamo er nota\n")
+
 
 parser = argparse.ArgumentParser("simple_example")
 parser.add_argument("dir", help="collection directory name", type=str)
 parser.add_argument("fileNames", help="collection directory name", type=str)
 
 args = parser.parse_args()
+
+print("Resizing /"+args.dir+"\n")
 
 fileNames = args.fileNames.split(",")
 
@@ -30,9 +32,13 @@ imgs = [cv2.imread(path) for path in filePath ]
 
 resized = [ res(img) for img in imgs]
 
-filePath =["./images/"+args.dir + "/"+name for name in fileNames ]
+outputPath =["./images/"+args.dir + "/resized/"+name for name in fileNames ]
 
-# [cv2.imwrite(,img) for img in resized]
+# print(outputPath[4])
+
+# cv2.imwrite(outputPath[4],resized[4])
+
+[cv2.imwrite(outputPath[index],img) for index, img in enumerate(resized)]
 
 
 # c=plt.imshow(imgs[4])

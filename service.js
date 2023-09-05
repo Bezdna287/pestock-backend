@@ -3,11 +3,11 @@ const fileSystem = require('./filesystem')
 
 async function synchronize(req, res) {
     let dir = req.query.dir;
-    let fileNames = fileSystem.readDirectory('./images/'+dir);
+    let fileNames = fileSystem.readDirectory('./images/'+dir).filter(f => f.isFile()).map(f => f.name);
     let numFiles = fileNames.length
     console.log('\nTriggered Filesystem-Database Syncronization:\n');
 
-    console.log('\tparsing '+numFiles+' files: '+fileNames+'\n from directory \''+dir+'\':\n');
+    console.log('\tparsing and resizing '+numFiles+' files: '+fileNames+'\n from directory \''+dir+'\':\n');
     
     let inserted = [];
     let processed = 0;
@@ -23,14 +23,14 @@ async function synchronize(req, res) {
         if(processed == numFiles){
             let status = inserted.length+' new images inserted'
             console.log('\n\t'+status)
-            // console.log(inserted)
-
-            res.status(200).json({message: status, response:inserted})
+            
+            resizeResult = await fileSystem.resize(dir,fileNames);
+            
+            res.status(200).json({message: status, response:inserted, resized: resizeResult})
         }
     });
-    console.log('\tresizing '+numFiles+' files: '+fileNames+'\n from directory \''+dir+'\':\n');
+        
     
-    await fileSystem.resize(dir,fileNames);
     
 }
 
@@ -77,12 +77,12 @@ async function findImagesByKeywords(req,res){
 
 /* Reads collection names and fileNames from BD and
     returns parsed images with base64 string representation*/
-async function getImagesB64(bdImages){ // maybe extra input arg to get /resized or /fullres ? 
+async function getImagesB64(bdImages, resized = true){ 
     return await Promise.all(bdImages.map(async image=>{
         const collectionName = await queries.getCollectionNameById(image.id_collection);
 
-        //maybe even just downscale only the requested images? sync is one-time but maybe the script every iteration makes everything too slow
-        image.b64 = await fileSystem.getB64(collectionName+'/'+image.file_name); // this path should be edited to get /resized images instead
+        console.log(collectionName+'/'+(resized ? 'resized/' : '')+image.file_name); 
+        image.b64 = await fileSystem.getB64(collectionName+'/'+(resized ? 'resized/' : '')+image.file_name); 
         return image
     }));
 }
