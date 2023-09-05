@@ -29,6 +29,7 @@ async function synchronize(req, res) {
         }
     });
     console.log('\tresizing '+numFiles+' files: '+fileNames+'\n from directory \''+dir+'\':\n');
+    
     await fileSystem.resize(dir,fileNames);
     
 }

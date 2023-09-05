@@ -43,20 +43,23 @@ async function parseFile(filePath) {
 
 async function resize(dir,fileNames){
   
-  const python = spawn('python', ['resize.py']);
+  const python = spawn('python', ['resize.py', dir, fileNames]);
 
   python.stdout.on('data', function (data) {
-    console.log('Pipe data from python script ...\n' + data.toString());
+    console.log('python stdout:\n' + data.toString());
 
   });
   python.on('close', (code) => {
-    console.log(`child process close all stdio with code ${code}`);
+    console.log(`\tpython closed with code ${code}\n`);
   });
 
   python.stderr.on('data', (data) => {
-    console.log(`stderr: ${data}`);
+    console.log(`\tstderr: ${data}\n`);
+    // python.stdin.pause();
+    // python.kill();
   });
 
+  
 
   // fileNames.forEach(async fileName=>{
   
