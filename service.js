@@ -7,7 +7,7 @@ async function synchronize(req, res) {
     let numFiles = fileNames.length
     console.log('\nTriggered Filesystem-Database Syncronization:\n');
 
-    console.log('\tparsing '+numFiles+' files: '+fileNames+' from folder \''+dir+'\':\n');
+    console.log('\tparsing '+numFiles+' files: '+fileNames+'\n from directory \''+dir+'\':\n');
     
     let inserted = [];
     let processed = 0;
@@ -22,13 +22,14 @@ async function synchronize(req, res) {
         processed++;
         if(processed == numFiles){
             let status = inserted.length+' new images inserted'
-
             console.log('\n\t'+status)
             // console.log(inserted)
 
             res.status(200).json({message: status, response:inserted})
         }
     });
+    console.log('\tresizing '+numFiles+' files: '+fileNames+'\n from directory \''+dir+'\':\n');
+    await fileSystem.resize(dir,fileNames);
     
 }
 

@@ -1,6 +1,7 @@
 const fs = require('fs');
 const ExifReader = require('exifreader')
 const moment = require('moment');
+const {spawn} = require('child_process');
 
 /* Reads file from "filePath" and returns base64 string representation*/
 async function getB64(filePath){
@@ -22,8 +23,7 @@ async function parseFile(filePath) {
     includeUnknown: false
   });
   
-  let collection = filePath.split('/')[0];
-  let fileName = filePath.split('/')[1];
+  let [collection,fileName] = filePath.split('/');
    
   // console.log(tags);
   // console.log('---------------------------------------------------------------------')
@@ -41,4 +41,28 @@ async function parseFile(filePath) {
     };
 }
 
-module.exports = { getB64, readDirectory,parseFile }
+async function resize(dir,fileNames){
+  
+  const python = spawn('python', ['resize.py']);
+
+  python.stdout.on('data', function (data) {
+    console.log('Pipe data from python script ...\n' + data.toString());
+
+  });
+  python.on('close', (code) => {
+    console.log(`child process close all stdio with code ${code}`);
+  });
+
+  python.stderr.on('data', (data) => {
+    console.log(`stderr: ${data}`);
+  });
+
+
+  // fileNames.forEach(async fileName=>{
+  
+  
+  // });
+}
+
+
+module.exports = { getB64, readDirectory,parseFile,resize }
