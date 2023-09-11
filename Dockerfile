@@ -6,8 +6,9 @@ ENV NODE_ENV=production
 
 WORKDIR /app
 
-RUN pip3 install
+RUN apt-get update
 
+RUN apt-get install -y python3-pip
 COPY ["package.json", "package-lock.json*", "./"]
 
 RUN npm install --production
