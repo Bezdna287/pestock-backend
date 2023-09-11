@@ -8,11 +8,16 @@ const apiPort = process.env.PORT || 3000
 const service = require('./service')
 
 const origins = [
-    process.env.ORIGINS || "http://localhost:4200",
+    process.env.ORIGINS || "http://localhost:80",
+   "http://95.18.247.212:4200",
 ]
+var corsOptions = {
+    origin: origins,
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  }
 
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
