@@ -5,7 +5,13 @@ const {spawn} = require('child_process');
 
 /* Reads file from "filePath" and returns base64 string representation*/
 async function getB64(filePath){
-  let data = fs.readFileSync('images/' + filePath, 'base64');
+  let data = [];
+  let path = 'images/' + filePath;
+  
+  if(fs.existsSync(path)){
+    data = fs.readFileSync(path, 'base64');
+  }
+    
   const b64String = Buffer.from(data, 'binary').toString();
   return b64String;
 }
