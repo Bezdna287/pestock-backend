@@ -7,7 +7,7 @@ services:
       - 4200:80
     working_dir: /app
     volumes:
-     - ~/desarrollo/angular/eseoshe/src/assets:/app/src/assets
+     - ./src/assets:/app/src/assets
     environment:
       API: http://pstock-backend:8080/pestock
     links:
@@ -20,7 +20,7 @@ services:
       - 3000:3001
     working_dir: /app
     volumes:
-      - ~/desarrollo/express/pestock-backend/images:/app/images
+      - ./images:/app/images
     environment:
       PORT: 3001
       ORIGINS: http://localhost:4200
