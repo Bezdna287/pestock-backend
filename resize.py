@@ -1,7 +1,5 @@
 import cv2
-# import numpy as np
 import argparse
-# import matplotlib.pyplot as plt
 
 def res(image):
     dim = None

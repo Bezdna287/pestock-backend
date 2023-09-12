@@ -1,26 +1,18 @@
 # syntax=docker/dockerfile:1
 
-# Create Python environment and install dependencies:
-FROM python:3.11.0-slim-buster as build
-
-RUN python3 -m venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
-
-
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-
-# NODE app:
-
 FROM node:18.17.1
 
 ENV NODE_ENV=production
 
 WORKDIR /app
 
-COPY --from=build /opt/venv /venv
+RUN apt-get update
 
-ENV PATH="/venv/bin:$PATH"
+RUN apt-get install -y python3-pip
+
+RUN apt-get install -y python3-opencv
+
+RUN pip install argparse --break-system-packages
 
 COPY ["package.json", "package-lock.json*", "./"]
 
