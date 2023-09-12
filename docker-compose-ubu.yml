@@ -1,6 +1,6 @@
 services:
   pstock-frontend:
-    image: pstock-frontend:0.0.1
+    image: pstock-frontend:latest
     hostname: pstock-frontend
     container_name: pstock-frontend
     ports:
@@ -13,7 +13,7 @@ services:
     links:
       - pstock-backend
   pstock-backend:
-    image: pstock-backend:0.0.1
+    image: pstock-backend:latest
     hostname: pstock-backend
     container_name: pstock-backend
     ports:
