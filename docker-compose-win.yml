@@ -1,6 +1,6 @@
 services:
   pstock-frontend:
-    image: pstock-frontend:0.0.1
+    image: pstock-frontend:latest
     hostname: pstock-frontend
     container_name: pstock-frontend
     ports:
@@ -13,7 +13,7 @@ services:
     links:
       - pstock-backend
   pstock-backend:
-    image: pstock-backend:0.0.1
+    image: pstock-backend:latest
     hostname: pstock-backend
     container_name: pstock-backend
     ports:
@@ -33,7 +33,7 @@ services:
     ports:
       - 4000:5432
     volumes:
-      - D:\desarrollo\express\pestock-backend\eldump.sql:/docker-entrypoint-initdb.d/eldump.sql
+      - D:\desarrollo\express\pestock-backend\dump\eldump.sql:/docker-entrypoint-initdb.d/eldump.sql
     environment:
       POSTGRES_PASSWORD: Cashimba01
       POSTGRES_USER: postgres

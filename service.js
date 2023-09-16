@@ -66,7 +66,7 @@ async function findImagesByFileNames(req,res){
 
 /* returns images from comma separated keywords from param "keywords" */
 async function findImagesByKeywords(req,res){
-    const keywords = req.query.keywords.split(',').map(each=>'%'+each+'%');
+    const keywords = req.query.keywords.split(',').map(each=>'% '+each.trim()+'%');
     console.log(keywords)
     let images = await queries.getImagesByKeywords(keywords);
     let imagesb64 = await getImagesB64(images);

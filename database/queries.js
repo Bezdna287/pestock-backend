@@ -51,7 +51,7 @@ async function getImagesByCollection(idCollection){
 }
 
 async function getImagesByKeywords(keywords){
-  let images = await pool.query('SELECT * FROM images WHERE keywords like ANY($1)', [keywords]);
+  let images = await pool.query('SELECT * FROM images WHERE keywords like $1', [`${keywords}%`]);
   return images.rows;
 }
 
