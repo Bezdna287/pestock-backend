@@ -10,7 +10,7 @@ const service = require('./service')
 const origins = [
     process.env.ORIGINS || "http://localhost:4200",
    "http://95.18.247.212:4200",
-   "http://localhost:80"
+   "http://0.0.0.0:4200"
 ]
 var corsOptions = {
     origin: origins,

@@ -49,8 +49,8 @@ async function parseFile(filePath) {
 
 async function resize(res,body,dir,fileNames){
   
-  const python = spawn('python', ['resize.py', dir, fileNames]);
-  // const python = spawn('python3', ['resize.py', dir, fileNames]);
+  // const python = spawn('python', ['resize.py', dir, fileNames]);
+  const python = spawn('python3', ['resize.py', dir, fileNames]);
   
   console.log('\n\nStarting resize...\t')
 
