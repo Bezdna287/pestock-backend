@@ -14,11 +14,15 @@ cd ~/desarrollo/angular/eseoshe
 
 rm -rf dist/*
 
+git pull
+
 npm run build
 
 sudo docker build --tag pstock-frontend .
 
 cd ~/desarrollo/express/pestock-backend
+
+git pull
 
 sudo docker build --tag pstock-backend .
 
