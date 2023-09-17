@@ -37,11 +37,11 @@ async function parseFile(filePath) {
   // TODO: implement types to avoid manual object parsing
   return { 
     title: tags.ImageDescription?.description ? tags.ImageDescription?.description : 'Dummy title (it was empty)',
-    keywords: tags.subject?.description ? tags.subject?.description : 'key00, key01, key02, key03, key04 (it was empty)',
+    keywords: ' '+(tags.subject?.description ? tags.subject?.description : 'key00, key01, key02, key03, key04 (it was empty)'),
     id_collection: collection,
     height: tags['Image Height']?.value,
     width: tags['Image Width']?.value,
-    date_publish: moment(Date.now()).format('DD/MM/yyyy'),
+    date_publish: moment(Date.now()).format('yyyy/MM/DD'),
     download: 0,
     file_name: fileName
     };
@@ -49,7 +49,8 @@ async function parseFile(filePath) {
 
 async function resize(dir,fileNames){
   
-  const python = spawn('python3', ['resize.py', dir, fileNames]);
+  const python = spawn('python', ['resize.py', dir, fileNames]);
+  // const python = spawn('python3', ['resize.py', dir, fileNames]);
   
   console.log('\n\nStarting resize...\t')
 
@@ -59,7 +60,7 @@ async function resize(dir,fileNames){
   });
   python.on('close', (code) => {
     console.log(`\tResize exited with code ${code}\n`);
-    if(code == 0){
+    if(code === 0){
       return true;
     }   
   });
