@@ -23,13 +23,14 @@ print("Resizing /"+args.dir+"\n")
 
 fileNames = args.fileNames.split(",")
 
+outputPath =["./images/"+args.dir + "/resized/"+name for name in fileNames ]
+
 filePath =["./images/"+args.dir + "/"+name for name in fileNames ]
 
 imgs = [cv2.imread(path) for path in filePath ]
 
 resized = [ res(img) for img in imgs]
 
-outputPath =["./images/"+args.dir + "/resized/"+name for name in fileNames ]
 
 # print(outputPath[4])
 

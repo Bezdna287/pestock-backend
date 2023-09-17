@@ -23,18 +23,12 @@ async function synchronize(req, res) {
         if(processed == numFiles){
             let status = inserted.length+' new images inserted'
             console.log('\n\t'+status)
+            
             body={message: status, inserted:inserted, resized: false}
             resizeResult = await fileSystem.resize(res,body,dir,fileNames);
-            
-            
         }
     });
-        
-    
-    
 }
-
-
 
 async function findAllImages(req, res){
     let images = await queries.getImages(); 

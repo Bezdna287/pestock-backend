@@ -56,8 +56,8 @@ async function resize(res,body,dir,fileNames){
 
   python.stdout.on('data', function (data) {
     console.log('\n\n\t' + data.toString());
-
   });
+
   python.on('close', async (code) => {
     console.log(`\tResize exited with code ${code}\n`);
     if(code === 0){
@@ -68,7 +68,7 @@ async function resize(res,body,dir,fileNames){
 
   python.stderr.on('data', (data) => {
     console.log(`\tstderr: ${data}\n`);
-    res.status(500).json({message: 'error resizing', response:[], resized: false})
+    res.status(400).json({message: 'error resizing', response:[], resized: false})
   });
 }
 
