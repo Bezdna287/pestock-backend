@@ -37,6 +37,7 @@ outputPath =["./images/"+args.dir + "/resized/"+name for name in fileNames ]
 
 [cv2.imwrite(outputPath[index],img) for index, img in enumerate(resized)]
 
+[print("\t"+outputPath[index]+"\n") for index,img in enumerate(resized)]
 
 # c=plt.imshow(imgs[4])
 # plt.show()

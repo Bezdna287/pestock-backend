@@ -47,7 +47,7 @@ async function parseFile(filePath) {
     };
 }
 
-async function resize(dir,fileNames){
+async function resize(res,body,dir,fileNames){
   
   const python = spawn('python', ['resize.py', dir, fileNames]);
   // const python = spawn('python3', ['resize.py', dir, fileNames]);
@@ -58,16 +58,17 @@ async function resize(dir,fileNames){
     console.log('\n\n\t' + data.toString());
 
   });
-  python.on('close', (code) => {
+  python.on('close', async (code) => {
     console.log(`\tResize exited with code ${code}\n`);
     if(code === 0){
-      return true;
+      body.resized = true;
+      res.status(200).json(body)
     }   
   });
 
   python.stderr.on('data', (data) => {
     console.log(`\tstderr: ${data}\n`);
-    return false;
+    res.status(500).json({message: 'error resizing', response:[], resized: false})
   });
 }
 

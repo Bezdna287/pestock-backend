@@ -23,10 +23,10 @@ async function synchronize(req, res) {
         if(processed == numFiles){
             let status = inserted.length+' new images inserted'
             console.log('\n\t'+status)
+            body={message: status, inserted:inserted, resized: false}
+            resizeResult = await fileSystem.resize(res,body,dir,fileNames);
             
-            resizeResult = await fileSystem.resize(dir,fileNames);
             
-            res.status(200).json({message: status, response:inserted, resized: resizeResult})
         }
     });
         
