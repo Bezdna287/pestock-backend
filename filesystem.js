@@ -73,4 +73,34 @@ async function resize(res,body,dir,fileNames){
 }
 
 
-module.exports = { getB64, readDirectory,parseFile,resize }
+async function saveFiles(files){
+  files.forEach(async f=>{
+    let dir = './images/'+f.collection
+    let filePath = dir+'/'+f.name;
+    
+    if(!fs.existsSync(dir)){
+      console.error('\npath '+dir+' doesnt exist. creating...')
+      mkdir(dir)
+    }
+    
+    console.log('\nwriting '+filePath)
+
+    fs.writeFileSync(filePath,f.bytes,{flag:'w'})
+    
+    console.log('\nadding to '+dir+': ')
+    console.log(readDirectory(dir).filter(f => f.isFile()).map(f => f.name))    
+  })
+
+  
+}
+
+async function mkdir(dir){
+  fs.mkdir(dir, async (err) => {
+    if (err) {
+        return console.error(err);
+    }
+    console.log('directory '+dir+' created successfully');
+  });
+}
+
+module.exports = { getB64, readDirectory,parseFile,resize, saveFiles }

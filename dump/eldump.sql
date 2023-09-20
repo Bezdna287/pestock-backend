@@ -236,6 +236,9 @@ COPY public.collections (id, name) FROM stdin;
 3	Animals
 4	Lines
 5	Flowers
+6   Collection00
+7   Collection01
+8   Collection02
 \.
 
 

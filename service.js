@@ -2,23 +2,23 @@ const queries = require('./database/queries')
 const fileSystem = require('./filesystem')
 
 async function upload(req,res){
-    let files = Object.values(req['files'] ?? {})
+    
+    let rawFiles = Object.values(req['files'] ?? {})
     let body = req['body']
     let meta = JSON.parse(body['meta'])
-    console.log('\nmetadata: ')
-    console.log(meta)
+    // console.log('\nmetadata: ')
+    // console.log(meta)
     let shouldSync = meta.sync;
 
-    let msg = 'processing '+files.length+' new files '+(shouldSync? 'and' : 'without')+' sync';
+    let msg = 'processing '+rawFiles.length+' new files '+(shouldSync? 'and' : 'without')+' sync';
     console.log(msg)
-
-    //create file from bytes (file.data)
-    files.map(f=>f.data)
-    // saveFiles();
-
-    //save file to disk
-    //return confirmation about inserts and resize
-
+    
+    let files = rawFiles.map(f=>{
+        let i = rawFiles.indexOf(f)
+        return {number: i, name:f.name, bytes:f.data, collection: meta[i] ?? 'dummyCollection'}
+    })
+    fileSystem.saveFiles(files)
+    
     res.status(200).json({message: msg, response:[], resized: false});
 }
 
