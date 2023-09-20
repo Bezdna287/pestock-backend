@@ -2,10 +2,13 @@ const queries = require('./database/queries')
 const fileSystem = require('./filesystem')
 
 async function upload(req,res){
-    let file = req['files'].elarchivo
-    console.log(file.data)
+    let files = Object.values(req['files'] ?? {})
+    console.log(files)
 
     //create file from bytes (file.data)
+    // Object.values(files).forEach(f=>console.log(f))
+
+
     //save file to disk
     //return confirmation about inserts and resize
 
