@@ -6,6 +6,7 @@ const app = express()
 const apiName = '/pestock'
 const apiPort = process.env.PORT || 3000
 const service = require('./service')
+const fileUpload = require('express-fileupload');
 
 const origins = [
     process.env.ORIGINS || "http://localhost:4200",
@@ -16,7 +17,7 @@ var corsOptions = {
     origin: origins,
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
   }
-
+app.use(fileUpload())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors(corsOptions))
 app.use(bodyParser.json())
@@ -39,6 +40,7 @@ app.get(apiName+'/collections/:idCollection', service.getCollectionById)
 
 app.get(apiName+'/collection/:idCollection', service.getImagesByCollection)
 
+app.post(apiName+'/upload', service.upload)
 
 app.listen(apiPort, () => {
     console.log(`Server running on port ${apiPort}`)

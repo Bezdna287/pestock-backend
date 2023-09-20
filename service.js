@@ -1,6 +1,18 @@
 const queries = require('./database/queries')
 const fileSystem = require('./filesystem')
 
+async function upload(req,res){
+    let file = req['files'].elarchivo
+    console.log(file.data)
+
+    //create file from bytes (file.data)
+    //save file to disk
+    //return confirmation about inserts and resize
+
+    res.status(200).json('iyo perfe');
+}
+
+
 async function synchronize(req, res) {
     let dir = req.query.dir;
     let fileNames = fileSystem.readDirectory('./images/'+dir).filter(f => f.isFile()).map(f => f.name);
@@ -100,4 +112,4 @@ async function getImagesByCollection(req,res){
 }
 
 
-module.exports = { synchronize, findAllImages, findImageById,findImagesBy, getCollections, getCollectionById, getImagesByCollection }
+module.exports = { synchronize, findAllImages, findImageById,findImagesBy, getCollections, getCollectionById, getImagesByCollection, upload }

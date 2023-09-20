@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "nodemon server.js"
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +17,7 @@
     "exif-js": "^2.3.0",
     "exifreader": "^4.9.1",
     "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
     "moment": "^2.29.4",
     "node-iptc": "^1.0.5",
     "nodemon": "^3.0.1",
