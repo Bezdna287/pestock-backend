@@ -17,7 +17,7 @@ async function upload(req,res){
         let i = rawFiles.indexOf(f)
         return {number: i, name:f.name, bytes:f.data, collection: meta[i] ?? 'dummyCollection'}
     })
-    fileSystem.saveFiles(files)
+    await fileSystem.saveFiles(files)
     
     res.status(200).json({message: msg, response:[], resized: false});
 }

@@ -74,13 +74,13 @@ async function resize(res,body,dir,fileNames){
 
 
 async function saveFiles(files){
-  files.forEach(async f=>{
+  await files.forEach(async f=>{
     let dir = './images/'+f.collection
     let filePath = dir+'/'+f.name;
     
     if(!fs.existsSync(dir)){
       console.error('\npath '+dir+' doesnt exist. creating...')
-      mkdir(dir)
+      await mkdir(dir)
     }
     
     console.log('\nwriting '+filePath)
