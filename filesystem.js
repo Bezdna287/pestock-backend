@@ -100,6 +100,12 @@ async function mkdir(dir){
         return console.error(err);
     }
     console.log('directory '+dir+' created successfully');
+    fs.mkdir(dir+'resized', async (err) => {
+      if (err) {
+          return console.error(err);
+      }
+      console.log('directory '+dir+'resized'+' created successfully');
+    });
   });
 }
 

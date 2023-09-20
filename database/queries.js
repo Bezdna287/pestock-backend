@@ -45,6 +45,8 @@ async function insertImage(filePath){
   return result.rows[0];
 }
 
+//need to insert new collection in case it doesnt exist
+
 async function getImagesByCollection(idCollection){
   let images = await pool.query('SELECT * FROM images WHERE id_collection = $1', [idCollection]);
   return images.rows;
@@ -67,7 +69,7 @@ async function getCollectionById(id){
 
 async function getCollectionIdByName(name){
   let collection = await pool.query('SELECT * FROM collections WHERE name like $1', [name]);
-  return collection.rows[0].id;
+  return collection.rows[0]?.id;
 }
 
 async function getCollectionNameById(id){
