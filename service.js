@@ -2,7 +2,6 @@ const queries = require('./database/queries')
 const fileSystem = require('./filesystem')
 
 async function upload(req,res){
-    
     let rawFiles = Object.values(req['files'] ?? {})
     let body = req['body']
     let meta = JSON.parse(body['meta'])
@@ -18,7 +17,12 @@ async function upload(req,res){
         return {number: i, name:f.name, bytes:f.data, collection: meta[i] ?? 'dummyCollection'}
     })
     await fileSystem.saveFiles(files)
-    
+        
+    collection_id = await queries.getCollectionIdByName(files[0].collection)
+    if(collection_id == undefined){
+        newCollection = await queries.insertCollection(files[0].collection)
+    }
+
     res.status(200).json({message: msg, response:[], resized: false});
 }
 
@@ -36,7 +40,6 @@ async function synchronize(req, res) {
     
     fileNames.forEach(async fileName=>{
         let exists = await queries.countImagesByFileName(fileName);
-
         if(exists == 0){
             console.log('\tfile '+dir+'/'+fileName+' is new, will be added to database')
             inserted.push(await queries.insertImage(dir+'/'+fileName));

@@ -90,8 +90,6 @@ async function saveFiles(files){
     console.log('\nadding to '+dir+': ')
     console.log(readDirectory(dir).filter(f => f.isFile()).map(f => f.name))    
   })
-
-  
 }
 
 async function mkdir(dir){
@@ -100,11 +98,11 @@ async function mkdir(dir){
         return console.error(err);
     }
     console.log('directory '+dir+' created successfully');
-    fs.mkdir(dir+'resized', async (err) => {
+    fs.mkdir(dir+'/resized', async (err) => {
       if (err) {
           return console.error(err);
       }
-      console.log('directory '+dir+'resized'+' created successfully');
+      console.log('directory '+dir+'/resized'+' created successfully');
     });
   });
 }

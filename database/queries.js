@@ -38,16 +38,21 @@ async function countImagesByFileName(fileName) {
 }
 
 async function insertImage(filePath){
-  const parsedImage = await fileSystem.parseFile(filePath)
- 
-  parsedImage.id_collection = await getCollectionIdByName(parsedImage.id_collection)
-  
-  let result =  await pool.query('INSERT into images (id,title, keywords, id_collection, height, width, date_publish, download, file_name) VALUES (nextval(\'images_id\'),$1,$2,$3,$4,$5,$6,$7,$8) RETURNING *',Object.values(parsedImage));
-    
+  const image = await fileSystem.parseFile(filePath)
+  let collectionName = image.id_collection
+  image.id_collection = await getCollectionIdByName(collectionName)
+  let result =  await pool.query('INSERT into images (id,title, keywords, id_collection, height, width, date_publish, download, file_name) VALUES (nextval(\'images_id\'),$1,$2,$3,$4,$5,$6,$7,$8) RETURNING *',Object.values(image));
   return result.rows[0];
 }
 
-//need to insert new collection in case it doesnt exist
+async function insertCollection(name){
+  await pool.query('BEGIN')
+  let result =  await pool.query('INSERT into collections (id,name) VALUES (nextval(\'collect_id\'),$1) RETURNING *',[name]);
+  console.log('inserted collection ', result.rows[0])
+  await pool.query('COMMIT')
+  return result.rows[0];
+}
+
 
 async function getImagesByCollection(idCollection){
   let images = await pool.query('SELECT * FROM images WHERE id_collection = $1', [idCollection]);
@@ -71,7 +76,12 @@ async function getCollectionById(id){
 
 async function getCollectionIdByName(name){
   let collection = await pool.query('SELECT * FROM collections WHERE name like $1', [name]);
-  return collection.rows[0]?.id;
+  if(collection.rows.length > 1){
+    console.error('collection "'+name+'" already exists')
+    return 0
+  }else{
+    return collection.rows[0]?.id;
+  }
 }
 
 async function getCollectionNameById(id){
@@ -81,6 +91,7 @@ async function getCollectionNameById(id){
 
 module.exports = {
   insertImage,
+  insertCollection,
   getImages,
   getImageById,
   getImagesByFileNames,
