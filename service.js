@@ -3,16 +3,23 @@ const fileSystem = require('./filesystem')
 
 async function upload(req,res){
     let files = Object.values(req['files'] ?? {})
-    console.log(files)
+    let body = req['body']
+    let meta = JSON.parse(body['meta'])
+    console.log('\nmetadata: ')
+    console.log(meta)
+    let shouldSync = meta.sync;
+
+    let msg = 'processing '+files.length+' new files '+(shouldSync? 'and' : 'without')+' sync';
+    console.log(msg)
 
     //create file from bytes (file.data)
-    // Object.values(files).forEach(f=>console.log(f))
-
+    files.map(f=>f.data)
+    // saveFiles();
 
     //save file to disk
     //return confirmation about inserts and resize
 
-    res.status(200).json('iyo perfe');
+    res.status(200).json({message: msg, response:[], resized: false});
 }
 
 
