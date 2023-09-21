@@ -371,7 +371,7 @@ COPY public.users (id, nickname, email, date_register, last_entry) FROM stdin;
 -- Name: collect_id; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.collect_id', 1, false);
+SELECT pg_catalog.setval('public.collect_id', 5, true);
 
 
 --
