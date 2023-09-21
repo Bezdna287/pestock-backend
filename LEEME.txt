@@ -9,3 +9,36 @@
 	
 11/09/23:
 		-can python run inside a node container?	https://stackoverflow.com/questions/56913746/how-to-install-python-on-nodejs-docker-image
+
+
+
+-NEED TO CHECK FILESYSTEM STATE TO BE COHERENT WITH DB STATE:
+	-database dump file cant magically get coherent with filesystem state.
+	-collections MUST be inserted depending on filesystem directory structure, NOT depending on /upload body data!!!!!!!!!
+	
+	SCENARIO 1: (must detect manually, could be automated) 
+	if (filesystem has files not inserted in database):
+		FIRST, must insert new collections depending on directory names not found in database as collection.name
+		THEN, instead of doing anything else, maybe this is already the proper scenario for a normal sync,
+		try to just stop here, return each new collection.name inserted and make frontend call /sync forEach 
+	
+	SCENARIO 2: (when images are blank in gallery)
+	if (database has file paths not resized (or even uploaded) in filesystem):
+		manually altering the filesystem, for now, SEEMS not to make the app crash, images just lack b64 string.
+		however...
+		SCENARIO 2.1: (could be automated)
+			if every collection.name exists in filesystem, and its images are not resized,
+			warn frontend to call sync (same as SCENARIO 1)
+		
+		SCENARIO 2.2: (need human attention)
+			if there are collection.names not found in filesystem,
+			and/or has images not resized/uploaded,
+			warn frontend to call 911 (needs professional attention)	
+
+
+	
+-NEED TO AVOID RESIZE IF IMAGE ALREADY "SMALL"
+
+-NEED ERROR HANDLING TO AVOID RESTARTING CONTAINERS WHEN ERROR
+-NEED ERROR HANDLING WHEN DB DOESNT CONNECT
+-NEED COHERENT ERROR HANDLING EVERYWHERE
