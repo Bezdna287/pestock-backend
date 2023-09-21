@@ -1,5 +1,4 @@
 services:
-  env_file: docker.env
   pstock-frontend:
     image: pstock-frontend:latest
     hostname: pstock-frontend
