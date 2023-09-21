@@ -10,7 +10,6 @@ const pool = new Pool({
   password: 'Cashimba01',
   port: process.env.DBPORT || 4000,
 })
-console.log([process.env.DBHOST, process.env.DBPORT])
 //NEED TO IMPLEMENT ERROR HANDLING WHEN DB DOESNT CONNECT!!
 
 async function getImages(){
