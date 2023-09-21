@@ -1,3 +1,4 @@
+require('dotenv').config();
 const fs = require('fs');
 const ExifReader = require('exifreader')
 const moment = require('moment');
@@ -49,8 +50,7 @@ async function parseFile(filePath) {
 
 async function resize(res,body,dir,fileNames){
   
-  // const python = spawn('python', ['resize.py', dir, fileNames]);
-  const python = spawn('python3', ['resize.py', dir, fileNames]);
+  const python = spawn(process.env.PYTHON || 'python', ['resize.py', dir, fileNames]);
   
   console.log('\n\nStarting resize...\t')
 

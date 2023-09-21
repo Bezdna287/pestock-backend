@@ -5,12 +5,12 @@ const fileSystem = require('../filesystem')
 const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'postgres',
-  // host: process.env.DBHOST || 'localhost',
   host: process.env.DBHOST || '192.168.1.56',
   database: 'postgres',
   password: 'Cashimba01',
   port: process.env.DBPORT || 4000,
 })
+console.log([process.env.DBHOST, process.env.DBPORT])
 //NEED TO IMPLEMENT ERROR HANDLING WHEN DB DOESNT CONNECT!!
 
 async function getImages(){

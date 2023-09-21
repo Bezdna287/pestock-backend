@@ -1,4 +1,4 @@
-require('dotenv').config();
+const dotenv  = require('dotenv').config();
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -10,13 +10,14 @@ const fileUpload = require('express-fileupload');
 
 const origins = [
     process.env.ORIGINS || "http://localhost:4200",
-   "http://95.18.247.212:4200",
-   "http://192.168.1.56:4200"
 ]
+
 var corsOptions = {
     origin: origins,
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
   }
+console.log('\tENVIRONMENT:')
+console.log(process.env)
 app.use(fileUpload())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors(corsOptions))

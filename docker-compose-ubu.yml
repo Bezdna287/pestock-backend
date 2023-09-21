@@ -26,6 +26,7 @@ services:
       ORIGINS: http://localhost:4200
       DBHOST: laputabasededatos
       DBPORT: 5432
+      PYTHON: python3
   laputabasededatos:
     image: postgres
     container_name: laputabasededatos
