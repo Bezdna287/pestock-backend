@@ -199,11 +199,11 @@ ALTER TABLE public.images_id OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.user_id
-    START WITH 1
+    START WITH 6
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
-    CACHE 1;
+    CACHE 6;
 
 
 ALTER TABLE public.user_id OWNER TO postgres;
