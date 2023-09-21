@@ -20,6 +20,6 @@ RUN npm install --production
 
 COPY . .
 
-CMD [ "npm", "run", "serve" ]
+CMD [ "npm", "start" ]
 
 EXPOSE 3001
