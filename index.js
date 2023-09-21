@@ -9,7 +9,9 @@ const service = require('./service')
 const fileUpload = require('express-fileupload');
 
 const origins = [
-    process.env.ORIGINS || "http://localhost:4200",
+    process.env.ORIGIN_INNER ,
+    process.env.ORIGIN_OUTER,
+    "http://localhost:4200",
 ]
 
 var corsOptions = {

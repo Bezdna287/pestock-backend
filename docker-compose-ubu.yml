@@ -23,7 +23,8 @@ services:
       - ./images:/app/images
     environment:
       PORT: 3001
-      ORIGINS: ${ORIGINS}
+      ORIGIN_INNER: ${ORIGIN_INNER}
+      ORIGIN_OUTER: ${ORIGIN_OUTER}
       DBHOST: ${DBHOST}
       DBPORT: ${DBPORT}
       PYTHON_EX: ${PYTHON_EX}
