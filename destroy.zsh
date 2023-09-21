@@ -8,8 +8,6 @@ python fix.py
 
 sudo docker stop laputabasededatos
 
-sudo docker stop laputabasededatos
-
 # must have dumped BD before removing container, data will be lost
 sudo docker rm laputabasededatos
 
