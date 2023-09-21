@@ -11,7 +11,7 @@ const pool = new Pool({
   port: process.env.DBPORT || 4000,
 })
 //NEED TO IMPLEMENT ERROR HANDLING WHEN DB DOESNT CONNECT!!
-
+//NEED TO CHECK FILESYSTEM STATE TO BE COHERENT WITH DB STATE
 async function getImages(){
   let result = await pool.query('SELECT * FROM images ORDER BY id ASC').catch(err=>console.log(err));
   return result.rows;

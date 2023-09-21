@@ -114,11 +114,11 @@ COMMENT ON EXTENSION adminpack IS 'administrative functions for PostgreSQL';
 --
 
 CREATE SEQUENCE public.collect_id
-    START WITH 1
+    START WITH 6
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
-    CACHE 1;
+    CACHE 6;
 
 
 ALTER TABLE public.collect_id OWNER TO postgres;
@@ -199,11 +199,11 @@ ALTER TABLE public.images_id OWNER TO postgres;
 --
 
 CREATE SEQUENCE public.user_id
-    START WITH 6
+    START WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
-    CACHE 6;
+    CACHE 1;
 
 
 ALTER TABLE public.user_id OWNER TO postgres;
