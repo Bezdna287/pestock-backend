@@ -1,4 +1,3 @@
-require('dotenv').config();
 const fs = require('fs');
 const ExifReader = require('exifreader')
 const moment = require('moment');

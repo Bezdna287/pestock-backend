@@ -26,6 +26,29 @@ async function upload(req,res){
     res.status(200).json({message: msg, response:[], resized: false});
 }
 
+/* check if filesystem has collections not inserted in database*/
+async function checkNewDirectories(req,res){
+    let directories = fileSystem.readDirectory('./images');
+        
+    let inserted = []
+    let processed = 0;
+    try{
+    directories.forEach(async d=>{
+        id = await queries.getCollectionIdByName(d.name)
+        if(id == undefined){ // collection does not exist in BD
+            inserted.push(await queries.insertCollection(d.name))
+        }
+        processed++
+        if(processed == directories.length){
+            let msg = inserted ? inserted.length+' new collections inserted' : 'no new collections found'
+            res.status(200).json({message: msg, response:inserted, shouldSync: inserted.length > 0});
+        }
+    });
+    }catch(error){
+        console.error(error)
+        res.status(200).json({message: 'error checking new directories', response:error});
+    }
+}
 
 async function synchronize(req, res) {
     let dir = req.query.dir;
@@ -125,4 +148,9 @@ async function getImagesByCollection(req,res){
 }
 
 
-module.exports = { synchronize, findAllImages, findImageById,findImagesBy, getCollections, getCollectionById, getImagesByCollection, upload }
+module.exports = {
+    synchronize,
+    findAllImages,
+    findImageById, findImagesBy, getCollections, getCollectionById, getImagesByCollection, upload,
+    checkNewDirectories
+}

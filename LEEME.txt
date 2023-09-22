@@ -22,7 +22,7 @@
 		THEN, instead of doing anything else, maybe this is already the proper scenario for a normal sync,
 		try to just stop here, return each new collection.name inserted and make frontend call /sync forEach 
 	
-	SCENARIO 2: (when images are blank in gallery)
+	SCENARIO 2: (images are blank in gallery)
 	if (database has file paths not resized (or even uploaded) in filesystem):
 		manually altering the filesystem, for now, SEEMS not to make the app crash, images just lack b64 string.
 		however...
