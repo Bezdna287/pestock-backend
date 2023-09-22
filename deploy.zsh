@@ -26,6 +26,6 @@ git pull
 
 sudo docker build --tag pstock-backend .
 
-sudo docker compose -f docker-compose-ubu.yml -p pstock up -d
+sudo docker compose -f docker-compose-ubu.yml -p pstock --env-file .env --env-file .env.pro up -d
 
 sudo docker ps
