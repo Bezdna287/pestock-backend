@@ -3,6 +3,8 @@ const ExifReader = require('exifreader')
 const moment = require('moment');
 const {spawn} = require('child_process');
 
+const exists = (path)=>fs.existsSync(path);
+
 /* Reads file from "filePath" and returns base64 string representation*/
 async function getB64(filePath){
   let data = [];
@@ -60,7 +62,6 @@ async function resize(res,body,dir,fileNames){
   python.on('close', async (code) => {
     console.log(`\tResize exited with code ${code}\n`);
     if(code === 0){
-      body.resized = true;
       res.status(200).json(body)
     }   
   });
@@ -106,4 +107,4 @@ async function mkdir(dir){
   });
 }
 
-module.exports = { getB64, readDirectory,parseFile,resize, saveFiles }
+module.exports = { getB64, readDirectory,parseFile,resize, saveFiles,exists }

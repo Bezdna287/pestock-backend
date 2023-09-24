@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 })
 
-app.get(apiName+'/sync', service.synchronize)
+app.post(apiName+'/sync', service.synchronize)
 
 app.get(apiName+'/images/all', service.findAllImages)
 

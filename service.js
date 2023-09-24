@@ -2,28 +2,34 @@ const queries = require('./database/queries')
 const fileSystem = require('./filesystem')
 
 async function upload(req,res){
+    console.log('UPLOADING FILES')
     let rawFiles = Object.values(req['files'] ?? {})
     let body = req['body']
     let meta = JSON.parse(body['meta'])
     // console.log('\nmetadata: ')
     // console.log(meta)
     let shouldSync = meta.sync;
-
+    
     let msg = 'processing '+rawFiles.length+' new files '+(shouldSync? 'and' : 'without')+' sync';
     console.log(msg)
-    
-    let files = rawFiles.map(f=>{
-        let i = rawFiles.indexOf(f)
-        return {number: i, name:f.name, bytes:f.data, collection: meta[i] ?? 'dummyCollection'}
-    })
-    await fileSystem.saveFiles(files)
+    if(rawFiles.length > 0){
+        let files = rawFiles.map(f=>{
+            let i = rawFiles.indexOf(f)
+            return {number: i, name:f.name, bytes:f.data, collection: meta[i] ?? 'dummyCollection'}
+        })
+        await fileSystem.saveFiles(files)
         
-    collection_id = await queries.getCollectionIdByName(files[0].collection)
-    if(collection_id == undefined){
-        newCollection = await queries.insertCollection(files[0].collection)
-    }
+        collection_id = await queries.getCollectionIdByName(files[0].collection)
+        if(collection_id == undefined){
+            newCollection = await queries.insertCollection(files[0].collection)
+        }
 
-    res.status(200).json({message: msg, response:[], resized: false});
+        res.status(200).json({message: msg, response:[], resized: false});
+    }else{
+        
+        body={message: 'no files uploaded', inserted:0, resized: false}
+        res.status(200).json(body)
+    }
 }
 
 /* check if filesystem has collections not inserted in database*/
@@ -59,23 +65,50 @@ async function synchronize(req, res) {
     console.log('\tparsing and resizing '+numFiles+' files: '+fileNames+'\n from directory \''+dir+'\':\n');
     
     let inserted = [];
+    let resized = [];
+    let notResized= [];
     let processed = 0;
     
-    fileNames.forEach(async fileName=>{
-        let exists = await queries.countImagesByFileName(fileName);
-        if(exists == 0){
-            console.log('\tfile '+dir+'/'+fileName+' is new, will be added to database')
-            inserted.push(await queries.insertImage(dir+'/'+fileName));
-        }
-        processed++;
-        if(processed == numFiles){
-            let status = inserted.length+' new images inserted'
-            console.log('\n\t'+status)
+        fileNames.forEach(async fileName=>{
+            let exists = await queries.countImagesByFileName(fileName);
+            if(exists == 0){
+                console.log('\tfile '+dir+'/'+fileName+' is new, will be added to database')
+                inserted.push(await queries.insertImage(dir+'/'+fileName));
+            }
+            if(await isItResized(dir,fileName)){
+                resized.push(fileName)
+                console.log(fileName+' is resized')
+            }else{
+                notResized.push(fileName)
+                console.log(fileName+' is NOT resized')
+            }
             
-            body={message: status, inserted:inserted, resized: false}
-            resizeResult = await fileSystem.resize(res,body,dir,fileNames);
-        }
-    });
+            processed++;
+
+            if(processed == numFiles){
+                let numInserted = inserted.length
+
+                let shouldResize = resized.length != numFiles;
+
+                let status = numInserted+' new images inserted'
+
+                console.log('\n\t'+status)
+                //when inserted == 0, need to check if /resized has all files, if not, should resize
+                
+                if(shouldResize || inserted.length > 0){
+                    console.log('Resizing: ',notResized)
+                    body={message: status, inserted:inserted, resized: notResized}
+                    resizeResult = await fileSystem.resize(res,body,dir,fileNames);
+                }else{
+                    body={message: 'no files to sync', inserted:0, resized: []}
+                    res.status(200).json(body)
+                }
+            }
+        });
+}
+
+async function isItResized(dir,filename){
+    return fileSystem.exists('./images/'+dir+'/resized/'+filename)
 }
 
 async function findAllImages(req, res){
