@@ -88,7 +88,7 @@ async function synchronize(req, res) {
             if(exists == 0){ // OR NEED UPDATE, OR ALWAYS UPDATE TITLE AND KEYWORDS AND ACTIVE?
                 console.log('file '+dir+'/'+fileName+' is new, will be added to database')
                 inserted.push(await queries.insertImage(dir+'/'+fileName));
-            }else if(notResized.find(fileName)){
+            }else if(notResized.find(f=>f==fileName)){
                 console.log('file '+dir+'/'+fileName+' will be updated (and activated!)')
                 updated.push(await queries.updateImage(dir+'/'+fileName));
             }
