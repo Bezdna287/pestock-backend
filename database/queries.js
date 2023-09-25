@@ -100,7 +100,6 @@ async function getCollectionNameById(id){
 
 async function deleteImage(id){
   let deleted = await pool.query('UPDATE images SET active = false WHERE id = $1 ',[id]);
-  console.log(deleted)
   return deleted.rows;
 }
 

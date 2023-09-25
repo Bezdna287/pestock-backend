@@ -184,6 +184,7 @@ async function getImagesNoCollection(req,res){
 
 async function deleteImage(req,res){
     const id = parseInt(req.params.id);
+    console.log('removing image ',id)
     let del = await queries.deleteImage(id)
     res.status(200).json({"id":id, "message": 'deleted successfully', "im":del})
 }
