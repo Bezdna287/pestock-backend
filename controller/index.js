@@ -31,9 +31,11 @@ app.post(apiName+'/sync', service.synchronize)
 
 app.get(apiName+'/images/all', service.findAllImages)
 
-app.get(apiName+'/images/:id', service.findImageById)
+app.get(apiName+'/image/:id', service.findImageById)
 
 app.get(apiName+'/images', service.findImagesBy)
+
+app.get(apiName+'/images/noCollection', service.getImagesNoCollection)
 
 app.get(apiName+'/collections', service.getCollections)
 
@@ -44,6 +46,8 @@ app.get(apiName+'/collection/:idCollection', service.getImagesByCollection)
 app.post(apiName+'/upload', service.upload)
 
 app.get(apiName+'/checkDir', service.checkNewDirectories)
+
+app.delete(apiName+'/delete/:id', service.deleteImage)
 
 app.listen(apiPort, () => {
     console.log(`Server running on port ${apiPort}`)

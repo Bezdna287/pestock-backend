@@ -45,7 +45,8 @@ async function parseFile(filePath) {
     width: tags['Image Width']?.value,
     date_publish: moment(Date.now()).format('yyyy/MM/DD'),
     download: 0,
-    file_name: fileName
+    file_name: fileName,
+    active: true
     };
 }
 

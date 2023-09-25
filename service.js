@@ -87,13 +87,9 @@ async function synchronize(req, res) {
 
             if(processed == numFiles){
                 let numInserted = inserted.length
-
                 let shouldResize = resized.length != numFiles;
-
                 let status = numInserted+' new images inserted'
-
                 console.log('\n\t'+status)
-                //when inserted == 0, need to check if /resized has all files, if not, should resize
                 
                 if(shouldResize || inserted.length > 0){
                     console.log('Resizing: ',notResized)
@@ -180,10 +176,28 @@ async function getImagesByCollection(req,res){
     res.status(200).json(imagesb64);
 }
 
+async function getImagesNoCollection(req,res){
+    let images = await queries.getImagesNoCollection();
+    let imagesb64 = await getImagesB64(images);
+    res.status(200).json(imagesb64)
+}
+
+async function deleteImage(req,res){
+    const id = parseInt(req.params.id);
+    let del = await queries.deleteImage(id)
+    res.status(200).json({"id":id, "message": 'deleted successfully', "im":del})
+}
 
 module.exports = {
+    deleteImage,
     synchronize,
     findAllImages,
-    findImageById, findImagesBy, getCollections, getCollectionById, getImagesByCollection, upload,
+    findImageById,
+    findImagesBy,
+    getCollections,
+    getCollectionById,
+    getImagesByCollection,
+    getImagesNoCollection,
+    upload,
     checkNewDirectories
 }

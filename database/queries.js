@@ -45,7 +45,7 @@ async function insertImage(filePath){
   const image = await fileSystem.parseFile(filePath)
   let collectionName = image.id_collection
   image.id_collection = await getCollectionIdByName(collectionName)
-  let result =  await pool.query('INSERT into images (id,title, keywords, id_collection, height, width, date_publish, download, file_name) VALUES (nextval(\'images_id\'),$1,$2,$3,$4,$5,$6,$7,$8) RETURNING *',Object.values(image));
+  let result =  await pool.query('INSERT into images (id,title, keywords, id_collection, height, width, date_publish, download, file_name, active) VALUES (nextval(\'images_id\'),$1,$2,$3,$4,$5,$6,$7,$8) RETURNING *',Object.values(image));
   return result.rows[0];
 }
 
@@ -59,12 +59,17 @@ async function insertCollection(name){
 
 
 async function getImagesByCollection(idCollection){
-  let images = await pool.query('SELECT * FROM images WHERE id_collection = $1', [idCollection]);
+  let images = await pool.query('SELECT * FROM images WHERE id_collection = $1 AND active = true', [idCollection]);
   return images.rows;
 }
 
 async function getImagesByKeywords(keywords){
-  let images = await pool.query('SELECT * FROM images WHERE keywords like $1', [`${keywords}%`]);
+  let images = await pool.query('SELECT * FROM images WHERE keywords like $1 AND active = true', [`${keywords}%`]);
+  return images.rows;
+}
+
+async function getImagesNoCollection(){
+  let images = await pool.query('SELECT * FROM images WHERE active = false')
   return images.rows;
 }
 
@@ -93,7 +98,14 @@ async function getCollectionNameById(id){
   return collection.rows[0].name;
 }
 
+async function deleteImage(id){
+  let deleted = await pool.query('UPDATE images SET active = false WHERE id = $1 ',[id]);
+  console.log(deleted)
+  return deleted.rows;
+}
+
 module.exports = {
+  deleteImage,
   insertImage,
   insertCollection,
   getImages,
@@ -105,5 +117,6 @@ module.exports = {
   getCollectionIdByName,
   getCollectionNameById,
   getImagesByCollection, 
-  getImagesByKeywords
+  getImagesByKeywords,
+  getImagesNoCollection
 }
