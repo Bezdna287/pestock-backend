@@ -6,16 +6,19 @@ async function upload(req,res){
     let rawFiles = Object.values(req['files'] ?? {})
     let body = req['body']
     let meta = JSON.parse(body['meta'])
-    // console.log('\nmetadata: ')
-    // console.log(meta)
-    let shouldSync = meta.sync;
-    
-    let msg = 'processing '+rawFiles.length+' new files '+(shouldSync? 'and' : 'without')+' sync';
+        
+    let msg = 'processing '+rawFiles.length+' new files '
     console.log(msg)
+
     if(rawFiles.length > 0){
         let files = rawFiles.map(f=>{
             let i = rawFiles.indexOf(f)
-            return {number: i, name:f.name, bytes:f.data, collection: meta[i] ?? 'dummyCollection'}
+            return {
+                number: i,
+                name:f.name,
+                bytes:f.data,
+                collection: meta[i].collection ?? 'dummyCollection'
+               }
         })
         await fileSystem.saveFiles(files)
         
@@ -62,19 +65,15 @@ async function synchronize(req, res) {
     let numFiles = fileNames.length
     console.log('\nTriggered Filesystem-Database Syncronization:\n');
 
-    console.log('\tparsing and resizing '+numFiles+' files: '+fileNames+'\n from directory \''+dir+'\':\n');
+    console.log('parsing and resizing '+numFiles+' files: '+fileNames+'\n from directory \''+dir+'\':\n');
     
     let inserted = [];
+    let updated = [];
     let resized = [];
     let notResized= [];
     let processed = 0;
     
         fileNames.forEach(async fileName=>{
-            let exists = await queries.countImagesByFileName(fileName);
-            if(exists == 0){
-                console.log('\tfile '+dir+'/'+fileName+' is new, will be added to database')
-                inserted.push(await queries.insertImage(dir+'/'+fileName));
-            }
             if(await isItResized(dir,fileName)){
                 resized.push(fileName)
                 console.log(fileName+' is resized')
@@ -82,17 +81,29 @@ async function synchronize(req, res) {
                 notResized.push(fileName)
                 console.log(fileName+' is NOT resized')
             }
-            
+
+            //should look for image by filename AND COLLECTION? this will insert repeated images in different collections
+            //should UPDATE title and keywords when image is uploaded again
+            let exists = await queries.countImagesByFileName(fileName);
+            if(exists == 0){ // OR NEED UPDATE, OR ALWAYS UPDATE TITLE AND KEYWORDS AND ACTIVE?
+                console.log('file '+dir+'/'+fileName+' is new, will be added to database')
+                inserted.push(await queries.insertImage(dir+'/'+fileName));
+            }else{
+                console.log('file '+dir+'/'+fileName+' will be updated (and activated!)')
+                updated.push(await queries.updateImage(dir+'/'+fileName));
+            }
+                        
             processed++;
 
             if(processed == numFiles){
                 let numInserted = inserted.length
                 let shouldResize = resized.length != numFiles;
-                let status = numInserted+' new images inserted'
-                console.log('\n\t'+status)
+                let status = numInserted+' new images inserted, '+updated.length+' new images updated'
+                console.log('\n'+status)
                 
                 if(shouldResize || inserted.length > 0){
                     console.log('Resizing: ',notResized)
+                    console.log(fileNames)
                     body={message: status, inserted:inserted, resized: notResized}
                     resizeResult = await fileSystem.resize(res,body,dir,fileNames);
                 }else{

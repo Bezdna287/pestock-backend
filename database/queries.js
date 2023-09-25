@@ -49,6 +49,16 @@ async function insertImage(filePath){
   return result.rows[0];
 }
 
+async function updateImage(filePath){
+  const image = await fileSystem.parseFile(filePath)
+  const collectionName = image.id_collection
+  const newTitle = image.title
+  const newKeywords = image.keywords
+  const newIdCollection = await getCollectionIdByName(collectionName)
+  let result =  await pool.query('UPDATE images SET title = $1, keywords=$2, id_collection=$3, active=true WHERE file_name = $4 ',[newTitle, newKeywords,newIdCollection,image.file_name])
+  return result.rows[0];
+}
+
 async function insertCollection(name){
   await pool.query('BEGIN')
   let result =  await pool.query('INSERT into collections (id,name) VALUES (nextval(\'collect_id\'),$1) RETURNING *',[name]);
@@ -106,6 +116,7 @@ async function deleteImage(id){
 module.exports = {
   deleteImage,
   insertImage,
+  updateImage,
   insertCollection,
   getImages,
   getImageById,

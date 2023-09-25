@@ -18,6 +18,7 @@ async function getB64(filePath){
   return b64String;
 }
 
+
 /* Returns array with all file names contained in directory "path"*/
 const readDirectory = (path) => fs.readdirSync(path, { withFileTypes: true });
 
@@ -83,12 +84,11 @@ async function saveFiles(files){
       console.error('\npath '+dir+' doesnt exist. creating...')
       await mkdir(dir)
     }
-    
     console.log('\nwriting '+filePath)
 
     fs.writeFileSync(filePath,f.bytes,{flag:'w'})
     
-    console.log('\nadding to '+dir+': ')
+    console.log('\ncontent of '+dir+': ')
     console.log(readDirectory(dir).filter(f => f.isFile()).map(f => f.name))    
   })
 }
