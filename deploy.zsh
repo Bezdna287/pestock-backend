@@ -28,6 +28,8 @@ cd ~/desarrollo/express/pestock-backend
 
 git pull
 
+npm install
+
 sudo docker build --tag pstock-backend .
 
 sudo docker compose -f docker-compose-ubu.yml -p pstock --env-file .env.pro up -d
