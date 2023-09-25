@@ -18,6 +18,8 @@ git checkout develop
 
 git pull
 
+npm install
+
 npm run build
 
 sudo docker build --tag pstock-frontend .
