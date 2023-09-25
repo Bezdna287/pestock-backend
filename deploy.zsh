@@ -14,6 +14,8 @@ cd ~/desarrollo/angular/eseoshe
 
 rm -rf dist/*
 
+git checkout develop
+
 git pull
 
 npm run build
