@@ -5,6 +5,7 @@ const {spawn} = require('child_process');
 
 const exists = (path)=>fs.existsSync(path);
 
+const write = (path, bytes)=>fs.writeFileSync(path,bytes,{flag:'w'})
 /* Reads file from "filePath" and returns base64 string representation*/
 async function getB64(filePath){
   let data = [];
@@ -108,4 +109,4 @@ async function mkdir(dir){
   });
 }
 
-module.exports = { getB64, readDirectory,parseFile,resize, saveFiles,exists }
+module.exports = { getB64, readDirectory,parseFile,resize, saveFiles,exists,write }

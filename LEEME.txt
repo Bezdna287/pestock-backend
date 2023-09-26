@@ -42,3 +42,4 @@
 -NEED ERROR HANDLING TO AVOID RESTARTING CONTAINERS WHEN ERROR
 -NEED ERROR HANDLING WHEN DB DOESNT CONNECT
 -NEED COHERENT ERROR HANDLING EVERYWHERE
+-deploy.zsh: need to check if git pull says 'already up to date' to avoid npm install & build

@@ -1,6 +1,30 @@
 const queries = require('./database/queries')
 const fileSystem = require('./filesystem')
 
+async function update(req,res){
+    let images = req.body.files
+    let updated = []
+    if(images){
+        console.log(images)
+
+        images.forEach(async im=>{
+            //NEW COLLECTION means FILE MUST BE MOVED TO OTHER DIRECTORY
+            //MUST NOT ALLOW CHANGE COLLECTION
+            //IF YOU WANT TO CHANGE COLLECTION, MUST REUPLOAD
+            //should get image from file, save new file in ¿new collection? with new metadata
+            //should parse new saved image, and update in BD
+
+            updated.push(await queries.updateImage(im))
+        })
+        
+        
+        res.status(200).json( {message: updated.length+' images updated', updated: updated})
+    }else{
+        res.status(400).json({message: 'no image to update'})
+    }
+    
+}
+
 async function upload(req,res){
     console.log('UPLOADING FILES')
     let rawFiles = Object.values(req['files'] ?? {})
@@ -17,7 +41,9 @@ async function upload(req,res){
                 number: i,
                 name:f.name,
                 bytes:f.data,
-                collection: meta[i].collection ?? 'dummyCollection'
+                collection: meta[i].collection ?? 'dummyCollection',
+                title: meta[i].title,
+                keywords: meta[i].keywords
                }
         })
         await fileSystem.saveFiles(files)
@@ -27,7 +53,58 @@ async function upload(req,res){
             newCollection = await queries.insertCollection(files[0].collection)
         }
 
-        res.status(200).json({message: msg, response:[], resized: false});
+        let inserted = [];
+        let updated = [];
+        let resized = [];
+        let notResized= [];
+        let processed = 0;
+        let fileNames = []
+        let numFiles = files.length
+
+        //new sync just after upload
+        files.forEach(async f=>{
+            let fileName = f.name
+            fileNames.push(fileName)
+            if(await isItResized(f.collection,fileName)){
+                resized.push(fileName)
+                console.log(fileName+' is resized')
+            }else{
+                notResized.push(fileName)
+                console.log(fileName+' is NOT resized')
+            }
+            
+            let exists = await queries.countImagesByFileName(fileName);
+            if(exists == 0){ 
+                console.log('file '+f.collection+'/'+fileName+' is new, will be added to database')
+                //instead of reading metadata from file, get data from /upload
+                inserted.push(await queries.insertImage(f));
+            }else{ 
+                console.log('file '+f.collection+'/'+fileName+' will be updated (and activated!)')
+                //instead of reading metadata from file, leave as is
+                updated.push(await queries.updateImage(f));
+            }
+                        
+            processed++;
+
+            if(processed == numFiles){
+                let numInserted = inserted.length
+                let shouldResize = resized.length != numFiles;
+                let status = numInserted+' new images inserted, '+updated.length+' new images updated'
+                console.log('\n'+status)
+                
+                if(shouldResize || inserted.length > 0){
+                    console.log('Resizing: ',notResized)
+                    console.log(fileNames)
+                    body={message: status, inserted:inserted, resized: notResized}
+                    resizeResult = await fileSystem.resize(res,body,f.collection,fileNames);
+                }else{
+                    body={message: 'no files to sync', inserted:0, resized: []}
+                    res.status(200).json(body)
+                }
+            }
+        });
+
+        // res.status(200).json({message: msg, response:[], resized: false});
     }else{
         
         body={message: 'no files uploaded', inserted:0, resized: false}
@@ -73,6 +150,7 @@ async function synchronize(req, res) {
     let notResized= [];
     let processed = 0;
     
+    //instead of reading fileNames from dir, get data from /upload?
         fileNames.forEach(async fileName=>{
             if(await isItResized(dir,fileName)){
                 resized.push(fileName)
@@ -82,15 +160,16 @@ async function synchronize(req, res) {
                 console.log(fileName+' is NOT resized')
             }
 
-            //should look for image by filename AND COLLECTION? this will insert repeated images in different collections
-            //should UPDATE title and keywords when image is uploaded again
+            
             let exists = await queries.countImagesByFileName(fileName);
-            if(exists == 0){ // OR NEED UPDATE, OR ALWAYS UPDATE TITLE AND KEYWORDS AND ACTIVE?
+            if(exists == 0){ 
                 console.log('file '+dir+'/'+fileName+' is new, will be added to database')
-                inserted.push(await queries.insertImage(dir+'/'+fileName));
-            }else{ //if(notResized.find(f=>f==fileName)){  doesnt work, need to check if need update, as old comments already said
+                //instead of reading metadata from file, get data from /upload
+                inserted.push(await queries.insertFileImage(dir+'/'+fileName));
+            }else{ 
                 console.log('file '+dir+'/'+fileName+' will be updated (and activated!)')
-                updated.push(await queries.updateImage(dir+'/'+fileName));
+                //instead of reading metadata from file, leave as is
+                updated.push(await queries.updateFileImage(dir+'/'+fileName));
             }
                         
             processed++;
@@ -211,5 +290,6 @@ module.exports = {
     getImagesByCollection,
     getImagesNoCollection,
     upload,
+    update,
     checkNewDirectories
 }

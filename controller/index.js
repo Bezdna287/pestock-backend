@@ -45,6 +45,8 @@ app.get(apiName+'/collection/:idCollection', service.getImagesByCollection)
 
 app.post(apiName+'/upload', service.upload)
 
+app.post(apiName+'/update', service.update)
+
 app.get(apiName+'/checkDir', service.checkNewDirectories)
 
 app.delete(apiName+'/delete/:id', service.deleteImage)

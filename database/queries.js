@@ -1,4 +1,5 @@
 const dotenv = require('dotenv')
+const moment = require('moment');
 
 let envPath = process.env.NODE_ENV == 'production' ?  '.env.pro':'.env.dev'
 dotenv.config({path: envPath})
@@ -41,15 +42,47 @@ async function countImagesByFileName(fileName) {
   return result.rows[0].count
 }
 
-async function insertImage(filePath){
-  const image = await fileSystem.parseFile(filePath)
-  let collectionName = image.id_collection
-  image.id_collection = await getCollectionIdByName(collectionName)
-  let result =  await pool.query('INSERT into images (id,title, keywords, id_collection, height, width, date_publish, download, file_name, active) VALUES (nextval(\'images_id\'),$1,$2,$3,$4,$5,$6,$7,$8) RETURNING *',Object.values(image));
+/* inserts image with values saved as metadata in filesystem */
+async function insertImage(file){
+  let collectionName = file.collection
+  file.id_collection = await getCollectionIdByName(collectionName)
+  let image ={
+    title: file.title,
+    keywords: ' '+file.keywords,
+    id_collection: file.id_collection,
+    height: 0,
+    width: 0,
+    date_publish: moment(Date.now()).format('yyyy/MM/DD'),
+    download: 0,
+    file_name: file.name,
+    active: true
+  }
+  let result =  await pool.query('INSERT into images (id,title, keywords, id_collection, height, width, date_publish, download, file_name, active) VALUES (nextval(\'images_id\'),$1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *',Object.values(image));
   return result.rows[0];
 }
 
-async function updateImage(filePath){
+/* inserts image with values saved as metadata in filesystem */
+async function insertFileImage(filePath){
+  const image = await fileSystem.parseFile(filePath)
+  let collectionName = image.id_collection
+  image.id_collection = await getCollectionIdByName(collectionName)
+  let result =  await pool.query('INSERT into images (id,title, keywords, id_collection, height, width, date_publish, download, file_name, active) VALUES (nextval(\'images_id\'),$1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *',Object.values(image));
+  return result.rows[0];
+}
+
+/* updates image with values in body */
+async function updateImage(image){
+  const newTitle = image.title
+  const newKeywords = image.keywords
+  let collectionName = image.collection
+  image.id_collection = await getCollectionIdByName(collectionName)
+  const newIdCollection = image.id_collection
+  let result =  await pool.query('UPDATE images SET title = $1, keywords=$2, id_collection=$3, active=true WHERE file_name = $4 ',[newTitle, newKeywords,newIdCollection,image.file_name])
+  return result.rows[0];
+}
+
+/* updates image with values saved as metadata in filesystem */
+async function updateFileImage(filePath){
   const image = await fileSystem.parseFile(filePath)
   const collectionName = image.id_collection
   const newTitle = image.title
@@ -115,8 +148,10 @@ async function deleteImage(id){
 
 module.exports = {
   deleteImage,
+  insertFileImage,
   insertImage,
   updateImage,
+  updateFileImage,
   insertCollection,
   getImages,
   getImageById,
