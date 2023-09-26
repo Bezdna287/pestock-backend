@@ -50,13 +50,15 @@ async function insertImage(file){
     title: file.title,
     keywords: ' '+file.keywords,
     id_collection: file.id_collection,
-    height: 0,
-    width: 0,
+    height: file.size[0],
+    width: file.size[1],
     date_publish: moment(Date.now()).format('yyyy/MM/DD'),
     download: 0,
     file_name: file.name,
     active: true
   }
+  console.log('INSERT image')
+  console.log(image)
   let result =  await pool.query('INSERT into images (id,title, keywords, id_collection, height, width, date_publish, download, file_name, active) VALUES (nextval(\'images_id\'),$1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *',Object.values(image));
   return result.rows[0];
 }
@@ -78,6 +80,7 @@ async function updateImage(image){
   let collectionName = image.collection
   image.id_collection = await getCollectionIdByName(collectionName)
   const newIdCollection = image.id_collection
+  console.log('UPDATE image')
   console.log(image)
   let result =  await pool.query('UPDATE images SET title = $1, keywords=$2, id_collection=$3, active=true WHERE file_name = $4 ',[newTitle, newKeywords,newIdCollection,image.file_name])
   await pool.query('COMMIT')
