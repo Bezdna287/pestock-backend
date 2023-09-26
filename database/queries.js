@@ -72,6 +72,7 @@ async function insertFileImage(filePath){
 
 /* updates image with values in body */
 async function updateImage(image){
+  await pool.query('BEGIN')
   const newTitle = image.title
   const newKeywords = image.keywords.join(',')
   let collectionName = image.collection
@@ -79,7 +80,7 @@ async function updateImage(image){
   const newIdCollection = image.id_collection
   console.log(image)
   let result =  await pool.query('UPDATE images SET title = $1, keywords=$2, id_collection=$3, active=true WHERE file_name = $4 ',[newTitle, newKeywords,newIdCollection,image.file_name])
-  
+  await pool.query('COMMIT')
   return result.rows[0];
 }
 
