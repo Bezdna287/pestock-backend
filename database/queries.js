@@ -73,7 +73,7 @@ async function insertFileImage(filePath){
 /* updates image with values in body */
 async function updateImage(image){
   const newTitle = image.title
-  const newKeywords = image.keywords
+  const newKeywords = image.keywords.join(',')
   let collectionName = image.collection
   image.id_collection = await getCollectionIdByName(collectionName)
   const newIdCollection = image.id_collection
