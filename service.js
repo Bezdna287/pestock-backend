@@ -43,7 +43,8 @@ async function upload(req,res){
                 bytes:f.data,
                 collection: meta[i].collection ?? 'dummyCollection',
                 title: meta[i].title,
-                keywords: meta[i].keywords
+                keywords: meta[i].keywords,
+                size: meta[i].size
                }
         })
         await fileSystem.saveFiles(files)
