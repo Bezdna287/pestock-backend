@@ -85,7 +85,7 @@ async function updateImage(image){
   console.log('UPDATE image')
   console.log(image)
   // await pool.query('BEGIN')
-  let result =  await pool.query('UPDATE images SET title = $1, keywords=$2, id_collection=$3, active=true WHERE file_name = $4 ',[newTitle, newKeywords,newIdCollection,image.file_name])
+  let result =  await pool.query('UPDATE images SET title = $1, keywords=$2, id_collection=$3, active=true WHERE file_name = $4 ',[newTitle, newKeywords,newIdCollection,image.name])
   // await pool.query('COMMIT')
   return result.rows[0];
 }
