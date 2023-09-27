@@ -99,7 +99,7 @@ async function upload(req,res){
                     body={message: status, inserted:inserted, resized: notResized}
                     resizeResult = await fileSystem.resize(res,body,f.collection,fileNames);
                 }else{
-                    body={message: 'no files to sync', inserted:0, resized: []}
+                    body={message: 'no files to sync', inserted:[], resized: [], updated: updated}
                     res.status(200).json(body)
                 }
             }

@@ -68,13 +68,15 @@ async function insertFileImage(filePath){
   const image = await fileSystem.parseFile(filePath)
   let collectionName = image.id_collection
   image.id_collection = await getCollectionIdByName(collectionName)
+  console.log('INSERT file image')
+  console.log(image)
   let result =  await pool.query('INSERT into images (id,title, keywords, id_collection, height, width, date_publish, download, file_name, active) VALUES (nextval(\'images_id\'),$1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *',Object.values(image));
   return result.rows[0];
 }
 
 /* updates image with values in body */
 async function updateImage(image){
-  await pool.query('BEGIN')
+  
   const newTitle = image.title
   const newKeywords = image.keywords.join(',')
   let collectionName = image.collection
@@ -82,8 +84,9 @@ async function updateImage(image){
   const newIdCollection = image.id_collection
   console.log('UPDATE image')
   console.log(image)
+  // await pool.query('BEGIN')
   let result =  await pool.query('UPDATE images SET title = $1, keywords=$2, id_collection=$3, active=true WHERE file_name = $4 ',[newTitle, newKeywords,newIdCollection,image.file_name])
-  await pool.query('COMMIT')
+  // await pool.query('COMMIT')
   return result.rows[0];
 }
 
@@ -94,6 +97,8 @@ async function updateFileImage(filePath){
   const newTitle = image.title
   const newKeywords = image.keywords
   const newIdCollection = await getCollectionIdByName(collectionName)
+  console.log('UPDATE file image')
+  console.log(image)
   let result =  await pool.query('UPDATE images SET title = $1, keywords=$2, id_collection=$3, active=true WHERE file_name = $4 ',[newTitle, newKeywords,newIdCollection,image.file_name])
   return result.rows[0];
 }
