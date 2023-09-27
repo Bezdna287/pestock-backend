@@ -42,7 +42,7 @@ async function countImagesByFileName(fileName) {
   return result.rows[0].count
 }
 
-/* inserts image with values saved as metadata in filesystem */
+/* inserts image with given values in /upload body*/
 async function insertImage(file){
   let collectionName = file.collection
   file.id_collection = await getCollectionIdByName(collectionName)
@@ -50,8 +50,8 @@ async function insertImage(file){
     title: file.title,
     keywords: ' '+file.keywords,
     id_collection: file.id_collection,
-    height: file.size[0],
-    width: file.size[1],
+    height: file.size[1],
+    width: file.size[0],
     date_publish: moment(Date.now()).format('yyyy/MM/DD'),
     download: 0,
     file_name: file.name,
@@ -74,9 +74,8 @@ async function insertFileImage(filePath){
   return result.rows[0];
 }
 
-/* updates image with values in body */
+/* updates image with given values in /upload body */
 async function updateImage(image){
-  
   const newTitle = image.title
   const newKeywords = image.keywords.join(',')
   let collectionName = image.collection
@@ -84,9 +83,7 @@ async function updateImage(image){
   const newIdCollection = image.id_collection
   console.log('UPDATE image')
   console.log(image)
-  // await pool.query('BEGIN')
   let result =  await pool.query('UPDATE images SET title = $1, keywords=$2, id_collection=$3, active=true WHERE file_name = $4 ',[newTitle, newKeywords,newIdCollection,image.name])
-  // await pool.query('COMMIT')
   return result.rows[0];
 }
 
