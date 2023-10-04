@@ -35,7 +35,7 @@ app.get(apiName+'/image/:id', service.findImageById)
 
 app.get(apiName+'/images', service.findImagesBy)
 
-app.get(apiName+'/images/noCollection', service.getImagesNoCollection)
+app.get(apiName+'/images/inactive', service.getInactiveImages)
 
 app.get(apiName+'/collections', service.getCollections)
 

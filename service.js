@@ -267,8 +267,8 @@ async function getImagesByCollection(req,res){
     res.status(200).json(imagesb64);
 }
 
-async function getImagesNoCollection(req,res){
-    let images = await queries.getImagesNoCollection();
+async function getInactiveImages(req,res){
+    let images = await queries.getInactiveImages();
     let imagesb64 = await getImagesB64(images);
     res.status(200).json(imagesb64)
 }
@@ -289,7 +289,7 @@ module.exports = {
     getCollections,
     getCollectionById,
     getImagesByCollection,
-    getImagesNoCollection,
+    getInactiveImages,
     upload,
     update,
     checkNewDirectories

@@ -119,7 +119,7 @@ async function getImagesByKeywords(keywords){
   return images.rows;
 }
 
-async function getImagesNoCollection(){
+async function getInactiveImages(){
   let images = await pool.query('SELECT * FROM images WHERE active = false')
   return images.rows;
 }
@@ -171,5 +171,5 @@ module.exports = {
   getCollectionNameById,
   getImagesByCollection, 
   getImagesByKeywords,
-  getImagesNoCollection
+  getInactiveImages
 }
