@@ -5,6 +5,7 @@ async function update(req,res){
     let images = req.body.files
     let updated = []
     if(images){
+        console.log('UPDATING IMAGES')
         console.log(images)
 
         images.forEach(async im=>{
