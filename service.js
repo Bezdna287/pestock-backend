@@ -1,5 +1,6 @@
 const queries = require('./database/queries')
 const fileSystem = require('./filesystem')
+const moment = require('moment');
 
 async function update(req,res){
     let images = req.body.files
@@ -27,10 +28,9 @@ async function update(req,res){
 }
 
 async function upload(req,res){
-    console.log('UPLOADING FILES')
+    console.log(moment(Date.now()).format('DD/MM/yyyy - HH:mm:ss')+' - UPLOADING FILES')
     let rawFiles = Object.values(req['files'] ?? {})
     let body = req['body']
-    console.log(body)
     let meta = JSON.parse(body['meta'])
         
     let msg = 'processing '+rawFiles.length+' new files '
