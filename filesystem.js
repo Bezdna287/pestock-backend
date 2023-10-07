@@ -76,8 +76,8 @@ async function resize(res,body,dir,fileNames){
 }
 
 
-async function saveFiles(files){
-  await files.forEach(async f=>{
+function saveFiles(files){
+  files.forEach(async f=>{
     let dir = './images/'+f.collection
     let filePath = dir+'/'+f.name;
     

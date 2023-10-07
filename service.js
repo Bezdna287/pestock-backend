@@ -47,7 +47,7 @@ async function upload(req,res){
                 size: meta[f.name].size
             }
         })
-        await fileSystem.saveFiles(files)
+        fileSystem.saveFiles(files)
         
         collection_id = await queries.getCollectionIdByName(files[0].collection)
         if(collection_id == undefined){
