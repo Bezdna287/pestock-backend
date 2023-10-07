@@ -48,7 +48,7 @@ async function insertImage(file){
   file.id_collection = await getCollectionIdByName(collectionName)
   let image ={
     title: file.title,
-    keywords: ' '+file.keywords.split(',').join(', '),
+    keywords: ' '+file.keywords.join(', '),
     id_collection: file.id_collection,
     height: file.size[1],
     width: file.size[0],
