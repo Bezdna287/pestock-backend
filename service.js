@@ -30,6 +30,7 @@ async function upload(req,res){
     console.log('UPLOADING FILES')
     let rawFiles = Object.values(req['files'] ?? {})
     let body = req['body']
+    console.log(body)
     let meta = JSON.parse(body['meta'])
         
     let msg = 'processing '+rawFiles.length+' new files '
