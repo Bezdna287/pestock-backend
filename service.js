@@ -36,17 +36,15 @@ async function upload(req,res){
     console.log(msg)
 
     if(rawFiles.length > 0){
-        let files = rawFiles.map(f=>{
-            let i = rawFiles.indexOf(f)
+        let files = rawFiles.map(f => {
             return {
-                number: i,
-                name:f.name,
-                bytes:f.data,
-                collection: meta[i].collection ?? 'dummyCollection',
-                title: meta[i].title,
-                keywords: meta[i].keywords,
-                size: meta[i].size
-               }
+                name: f.name,
+                bytes: f.data,
+                collection: meta[f.name].collection ?? 'dummyCollection',
+                title: meta[f.name].title,
+                keywords: meta[f.name].keywords,
+                size: meta[f.name].size
+            }
         })
         await fileSystem.saveFiles(files)
         
