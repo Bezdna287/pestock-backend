@@ -77,8 +77,8 @@ async function resize(res,body,dir,fileNames){
 
 
 async function saveFiles(files){
+  let dir = './images/'+files[0].collection
   files.forEach(async f=>{
-    let dir = './images/'+f.collection
     let filePath = dir+'/'+f.name;
     
     if(!fs.existsSync(dir)){
@@ -88,10 +88,10 @@ async function saveFiles(files){
     console.log('\nwriting '+filePath)
 
     fs.writeFileSync(filePath,f.bytes,{flag:'w'})
-    
-    console.log('\ncontent of '+dir+': ')
-    console.log(readDirectory(dir).filter(f => f.isFile()).map(f => f.name))    
   })
+
+  console.log('\ncontent of '+dir+': ')
+  console.log(readDirectory(dir).filter(f => f.isFile()).map(f => f.name))
 }
 
 async function mkdir(dir){

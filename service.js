@@ -9,23 +9,11 @@ async function update(req,res){
     if(images){
         console.log('UPDATING IMAGES')
         console.log(images)
-
-        images.forEach(async im=>{
-            //NEW COLLECTION means FILE MUST BE MOVED TO OTHER DIRECTORY
-            //MUST NOT ALLOW CHANGE COLLECTION
-            //IF YOU WANT TO CHANGE COLLECTION, MUST REUPLOAD
-            //should get image from file, save new file in ¿new collection? with new metadata
-            //should parse new saved image, and update in BD
-
-            updated.push(await queries.updateImage(im))
-        })
-        
-        
+        images.forEach(async im=>{updated.push(await queries.updateImage(im))})
         res.status(200).json( {message: updated.length+' images updated', updated: updated})
     }else{
         res.status(400).json({message: 'no image to update'})
     }
-    
 }
 
 async function upload(req,res){
@@ -48,8 +36,10 @@ async function upload(req,res){
                 size: meta[f.name].size
             }
         })
-        await fileSystem.saveFiles(files)
         
+        //SAVE FILES TO DISK
+        await fileSystem.saveFiles(files)
+             
         collection_id = await queries.getCollectionIdByName(files[0].collection)
         if(collection_id == undefined){
             newCollection = await queries.insertCollection(files[0].collection)
@@ -69,10 +59,10 @@ async function upload(req,res){
             fileNames.push(fileName)
             if(await isItResized(f.collection,fileName)){
                 resized.push(fileName)
-                console.log(fileName+' is resized')
+                console.log(f.collection+'/'+fileName+' is resized')
             }else{
                 notResized.push(fileName)
-                console.log(fileName+' is NOT resized')
+                console.log(f.collection+'/'+fileName+' is NOT resized')
             }
             
             let exists = await queries.countImagesByFileName(fileName);
@@ -95,8 +85,8 @@ async function upload(req,res){
                 console.log('\n'+status)
                 
                 if(shouldResize || inserted.length > 0){
-                    console.log('Resizing: ',notResized)
-                    console.log(fileNames)
+                    console.log('\nResizing: ')
+                    console.log(notResized)
                     body={message: status, inserted:inserted, resized: notResized, updated: updated}
                     resizeResult = await fileSystem.resize(res,body,f.collection,fileNames);
                 }else{
