@@ -34,9 +34,12 @@
 			if there are collection.names not found in filesystem,
 			and/or has images not resized/uploaded,
 			warn frontend to call 911 (needs professional attention)	
+-CHANGING TITLE AND KEYWORDS MAY BE POSSIBLE. WIDTH AND HEIGHT NOW WHAT?
+-CHANGING COLLECTION MAY NOT BE POSSIBLE. NEED TO REUPLOAD and RESYNC
 
 
-	
+
+CURRENT:
 -NEED TO AVOID RESIZE IF IMAGE ALREADY "SMALL"
 
 -NEED ERROR HANDLING TO AVOID RESTARTING CONTAINERS WHEN ERROR
@@ -44,5 +47,8 @@
 -NEED COHERENT ERROR HANDLING EVERYWHERE
 -deploy.zsh: need to check if git pull says 'already up to date' to avoid npm install & build
 
--CHANGING TITLE AND KEYWORDS MAY BE POSSIBLE. WIDTH AND HEIGHT NOW WHAT?
--CHANGING COLLECTION MAY NOT BE POSSIBLE. NEED TO REUPLOAD and RESYNC
+-when inserting new collection, need to create directory and directory/resize as well, so when /upload, its already there
+
+-when python tries to resize into a non existing /resize folder, se la suda, it should give error or at least create it 
+
+

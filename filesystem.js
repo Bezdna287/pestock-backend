@@ -83,8 +83,9 @@ async function saveFiles(files){
     
     if(!fs.existsSync(dir)){
       console.error('\npath '+dir+' doesnt exist. creating...')
-      await mkdir(dir)
+      await mkdir(dir) //need to do something with this async shit
     }
+    
     console.log('\nwriting '+filePath)
 
     fs.writeFileSync(filePath,f.bytes,{flag:'w'})
