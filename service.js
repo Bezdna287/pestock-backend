@@ -3,6 +3,7 @@ const fileSystem = require('./filesystem')
 const moment = require('moment');
 
 async function update(req,res){
+    console.log('\n['+moment(Date.now()).format('DD/MM/yyyy - HH:mm:ss')+']')
     let images = req.body.files
     let updated = []
     if(images){
@@ -28,7 +29,7 @@ async function update(req,res){
 }
 
 async function upload(req,res){
-    console.log(moment(Date.now()).format('DD/MM/yyyy - HH:mm:ss')+' - UPLOADING FILES')
+    console.log('\n['+moment(Date.now()).format('DD/MM/yyyy - HH:mm:ss')+'] - UPLOADING FILES')
     let rawFiles = Object.values(req['files'] ?? {})
     let body = req['body']
     let meta = JSON.parse(body['meta'])
@@ -96,10 +97,10 @@ async function upload(req,res){
                 if(shouldResize || inserted.length > 0){
                     console.log('Resizing: ',notResized)
                     console.log(fileNames)
-                    body={message: status, inserted:inserted, resized: notResized}
+                    body={message: status, inserted:inserted, resized: notResized, updated: updated}
                     resizeResult = await fileSystem.resize(res,body,f.collection,fileNames);
                 }else{
-                    body={message: 'no files to sync', inserted:[], resized: [], updated: updated}
+                    body={message: 'no new files, just updated', inserted:[], resized: [], updated: updated}
                     res.status(200).json(body)
                 }
             }
@@ -229,11 +230,10 @@ async function findImagesByFileNames(req,res){
 /* returns images from comma separated keywords from param "keywords" */
 async function findImagesByKeywords(req,res){
     const keywords = req.query.keywords.split(',').map(each=>'% '+each.trim()+'%');
-    console.log('\nparsed keywords:')
-    console.table(keywords)
     let images = await queries.getImagesByKeywords(keywords);
     let imagesb64 = await getImagesB64(images);
-    console.log('returning '+imagesb64.length + ' images with requested keywords')
+    console.log('returning '+imagesb64.length + ' images with requested keywords:')
+    console.log(keywords)
     res.status(200).json(imagesb64);
 }
 

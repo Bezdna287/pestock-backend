@@ -6,6 +6,7 @@ const apiName = '/pestock'
 const apiPort = process.env.PORT || 3000
 const service = require('../service')
 const fileUpload = require('express-fileupload');
+const moment = require('moment');
 
 const origins = [
     process.env.ORIGIN_INNER ,
@@ -52,5 +53,10 @@ app.get(apiName+'/checkDir', service.checkNewDirectories)
 app.delete(apiName+'/delete/:id', service.deleteImage)
 
 app.listen(apiPort, () => {
-    console.log(`Server running on port ${apiPort}`)
+    let time = '['+moment(Date.now()).format('DD/MM/yyyy - HH:mm:ss')+']'
+    console.log(
+       '\n'+ time+" %cTAMARISTA PSTOCK BACKEND",
+        "color: blue; font-size: 55px; background-color: yellow;"
+      );
+    console.log(`\nServer running on port ${apiPort}`)
 });

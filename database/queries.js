@@ -3,8 +3,8 @@ const moment = require('moment');
 
 let envPath = process.env.NODE_ENV == 'production' ?  '.env.pro':'.env.dev'
 dotenv.config({path: envPath})
-console.log('\tENVIRONMENT:')
-console.log(process.env)
+// console.log('\tENVIRONMENT:')
+// console.log(process.env)
 
 const fileSystem = require('../filesystem')
 
