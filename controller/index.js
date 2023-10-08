@@ -38,11 +38,13 @@ app.get(apiName+'/images', service.findImagesBy)
 
 app.get(apiName+'/images/inactive', service.getInactiveImages)
 
+app.post(apiName+'/collections', service.insertCollection)
+
 app.get(apiName+'/collections', service.getCollections)
 
 app.get(apiName+'/collections/:idCollection', service.getCollectionById)
 
-app.get(apiName+'/collection/:idCollection', service.getImagesByCollection)
+app.get(apiName+'/collections/images/:idCollection', service.getImagesByCollection)
 
 app.post(apiName+'/upload', service.upload)
 

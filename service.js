@@ -114,6 +114,13 @@ async function upload(req,res){
     }
 }
 
+async function insertCollection(req,res){
+    const name = req['body'].name   
+    let result = await queries.insertCollection(name)
+    let message = result.toString().includes('error') ? 'collection already exists' : 'new collection inserted'
+    res.status(200).json({message: message, inserted: result})
+}
+
 /* check if filesystem has collections not inserted in database*/
 async function checkNewDirectories(req,res){
     let directories = fileSystem.readDirectory('./images');
@@ -286,6 +293,7 @@ module.exports = {
     findAllImages,
     findImageById,
     findImagesBy,
+    insertCollection,
     getCollections,
     getCollectionById,
     getImagesByCollection,
