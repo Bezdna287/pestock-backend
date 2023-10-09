@@ -60,10 +60,10 @@ async function upload(req,res){
             fileNames.push(fileName)
             if(await isItResized(f.collection,fileName)){
                 resized.push(fileName)
-                console.log(f.collection+'/'+fileName+' is resized')
+                console.log('\n'+f.collection+'/'+fileName+' is resized')
             }else{
                 notResized.push(fileName)
-                console.log(f.collection+'/'+fileName+' is NOT resized')
+                console.log('\n'+f.collection+'/'+fileName+' is NOT resized')
             }
             
             let exists = await queries.countImagesByFileName(fileName);
