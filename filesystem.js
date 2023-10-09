@@ -81,9 +81,9 @@ async function saveFiles(files){
   files.forEach(async f=>{
     let filePath = dir+'/'+f.name;
     
-    if(!fs.existsSync(dir)){
+    if(!fs.existsSync(dir)){ //probably this 4 lines are not needed anymore
       console.error('\npath '+dir+' doesnt exist. creating...')
-      await mkdir(dir) //need to do something with this async shit
+      await mkdir(dir) 
     }
     
     console.log('\nwriting '+filePath)
@@ -110,4 +110,4 @@ async function mkdir(dir){
   });
 }
 
-module.exports = { getB64, readDirectory,parseFile,resize, saveFiles,exists,write }
+module.exports = { getB64, readDirectory,parseFile,resize, saveFiles,exists,write,mkdir }

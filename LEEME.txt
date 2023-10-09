@@ -37,6 +37,10 @@
 -CHANGING TITLE AND KEYWORDS MAY BE POSSIBLE. WIDTH AND HEIGHT NOW WHAT?
 -CHANGING COLLECTION MAY NOT BE POSSIBLE. NEED TO REUPLOAD and RESYNC
 
+-when inserting new collection, need to create directory and directory/resize as well
+, so when /upload, its already there. DONE
+
+
 
 
 CURRENT:
@@ -47,8 +51,9 @@ CURRENT:
 -NEED COHERENT ERROR HANDLING EVERYWHERE
 -deploy.zsh: need to check if git pull says 'already up to date' to avoid npm install & build
 
--when inserting new collection, need to create directory and directory/resize as well, so when /upload, its already there
 
--when python tries to resize into a non existing /resize folder, se la suda, it should give error or at least create it 
+
+-when python tries to resize into a non existing /resize folder, se la suda,
+ it should give error or at least create it 
 
 
