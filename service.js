@@ -73,7 +73,13 @@ async function upload(req,res){
             }else{ 
                 console.log('file '+f.collection+'/'+fileName+' will be updated (and activated!)')
                 //instead of reading metadata from file, leave as is
-                updated.push(await queries.updateImage(f))
+                await queries.updateImage(f)
+                .then(async ()=>{
+                    await queries.getImagesByFileNames([fileName])
+                    .then((u)=>{
+                        updated.push(u[0])
+                    })
+                })
             }
                         
             processed++;
