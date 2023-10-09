@@ -73,7 +73,7 @@ async function upload(req,res){
             }else{ 
                 console.log('file '+f.collection+'/'+fileName+' will be updated (and activated!)')
                 //instead of reading metadata from file, leave as is
-                updated.push(await queries.updateImage(f));
+                updated.push(await queries.updateImage(f))
             }
                         
             processed++;
@@ -87,10 +87,10 @@ async function upload(req,res){
                 if(shouldResize || inserted.length > 0){
                     console.log('\nResizing: ')
                     console.log(notResized)
-                    body={message: status, inserted:inserted, resized: notResized, updated: updated}
+                    body={message: status, inserted:inserted, resized: notResized, updated: updated, collection: f.collection}
                     resizeResult = await fileSystem.resize(res,body,f.collection,fileNames);
                 }else{
-                    body={message: 'no new files, just updated', inserted:[], resized: [], updated: updated}
+                    body={message: 'no new files, just updated', inserted:[], resized: [], updated: updated, collection: f.collection}
                     res.status(200).json(body)
                 }
             }
