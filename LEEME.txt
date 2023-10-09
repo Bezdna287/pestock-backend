@@ -56,4 +56,6 @@ CURRENT:
 -when python tries to resize into a non existing /resize folder, se la suda,
  it should give error or at least create it 
 
+-python script is quite sketchy, it should be refactored
+
 
