@@ -56,10 +56,10 @@ async function resize(res,body,dir,fileNames){
   
   const python = spawn(process.env.PYTHON_EX || 'python', ['resize.py', dir, fileNames]);
   
-  console.log('\nStarting resize...\t')
+  // console.log('\nStarting resize...\t')
 
   python.stdout.on('data', function (data) {
-    console.log('\n\n\t' + data.toString());
+    console.log('\n\t' + data.toString());
   });
 
   python.on('close', async (code) => {

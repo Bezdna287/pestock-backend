@@ -22,9 +22,9 @@ async function upload(req,res){
     let body = req['body']
     let meta = JSON.parse(body['meta'])
         
-    let msg = 'processing '+rawFiles.length+' new files '
+    let msg = 'processing '+rawFiles.length+' new files: '
     console.log(msg)
-
+    console.log(meta)
     if(rawFiles.length > 0){
         let files = rawFiles.map(f => {
             return {
@@ -52,7 +52,8 @@ async function upload(req,res){
         let processed = 0;
         let fileNames = []
         let numFiles = files.length
-
+        
+        
         //new sync just after upload
         files.forEach(async f=>{
             let fileName = f.name
@@ -67,12 +68,14 @@ async function upload(req,res){
             
             let exists = await queries.countImagesByFileName(fileName);
             if(exists == 0){ 
-                console.log('file '+f.collection+'/'+fileName+' is new, will be added to database')
+                console.log('\nfile '+f.collection+'/'+fileName+' is new, will be added to database')
+                
                 //instead of reading metadata from file, get data from /upload
                 inserted.push(await queries.insertImage(f));
             }else{ 
-                console.log('file '+f.collection+'/'+fileName+' will be updated (and activated!)')
-                //instead of reading metadata from file, leave as is
+                console.log('\nfile '+f.collection+'/'+fileName+' will be updated (and activated!)')
+                
+                //instead of reading metadata from file, leave as is      
                 await queries.updateImage(f)
                 .then(async ()=>{
                     await queries.getImagesByFileNames([fileName])
