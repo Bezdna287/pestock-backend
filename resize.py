@@ -26,15 +26,11 @@ fileNames = args.fileNames.replace(' ','').split(",")
 
 numFiles = len(fileNames)
 
-filePath= [0]*numFiles
-outputPath = [0]*numFiles
-imgs = [0]*numFiles
-resized = [0]*numFiles
-
 for i,name in enumerate(fileNames):
-    [filePath[i], outputPath[i]]=(prefix+name,prefix+"resized/"+name)
-    imgs[i] = cv2.imread(filePath[i])
-    resized[i] = res(imgs[i])
-    cv2.imwrite(outputPath[i],resized[i])
-    print("\t"+outputPath[i]+"\n")
+    [inputPath, outputPath]=(prefix+name,prefix+"resized/"+name)
+    img = cv2.imread(inputPath)
 
+    if(img is not None):
+        resized = res(img)
+        status=str(cv2.imwrite(outputPath,resized))
+        print(status+"\t"+outputPath+"\n")
