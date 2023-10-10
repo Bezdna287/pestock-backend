@@ -12,7 +12,6 @@ def res(image):
 
     return resized
 
-
 parser = argparse.ArgumentParser("simple_example")
 parser.add_argument("dir", help="collection directory name", type=str)
 parser.add_argument("fileNames", help="collection directory name", type=str)
@@ -21,27 +20,21 @@ args = parser.parse_args()
 
 print("Resizing /"+args.dir+"\n")
 
-fileNames = args.fileNames.split(",")
+prefix = "./images/"+args.dir + "/"
 
-outputPath =["./images/"+args.dir + "/resized/"+name for name in fileNames ]
+fileNames = args.fileNames.replace(' ','').split(",")
 
-filePath =["./images/"+args.dir + "/"+name for name in fileNames ]
+numFiles = len(fileNames)
 
-imgs = [cv2.imread(path) for path in filePath ]
+filePath= [0]*numFiles
+outputPath = [0]*numFiles
+imgs = [0]*numFiles
+resized = [0]*numFiles
 
-resized = [ res(img) for img in imgs]
+for i,name in enumerate(fileNames):
+    [filePath[i], outputPath[i]]=(prefix+name,prefix+"resized/"+name)
+    imgs[i] = cv2.imread(filePath[i])
+    resized[i] = res(imgs[i])
+    cv2.imwrite(outputPath[i],resized[i])
+    print("\t"+outputPath[i]+"\n")
 
-
-# print(outputPath[4])
-
-# cv2.imwrite(outputPath[4],resized[4])
-
-[cv2.imwrite(outputPath[index],img) for index, img in enumerate(resized)]
-
-[print("\t"+outputPath[index]+"\n") for index,img in enumerate(resized)]
-
-# c=plt.imshow(imgs[4])
-# plt.show()
-
-# d=plt.imshow(resized[4])
-# plt.show()
