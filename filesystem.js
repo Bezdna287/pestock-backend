@@ -65,7 +65,8 @@ async function resize(res,body,dir,fileNames){
   python.on('close', async (code) => {
     console.log(`\tResize exited with code ${code}\n`);
     if(code === 0){
-      body.date = moment(Date.now()).format('DD/MM/yyyy - HH:mm:ss')
+      body.resized = fileNames
+      body.date = moment(Date.now())
       res.status(200).json(body)
     }   
   });

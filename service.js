@@ -53,7 +53,6 @@ async function upload(req,res){
         let fileNames = []
         let numFiles = files.length
         
-        
         //new sync just after upload
         files.forEach(async f=>{
             let fileName = f.name
@@ -100,14 +99,14 @@ async function upload(req,res){
                         date:'',
                         message: status,
                         inserted:inserted,
-                        resized: notResized,
+                        resized: [], //notResized,
                         updated: updated,
                         collection: f.collection
                     }
-                    resizeResult = await fileSystem.resize(res,body,f.collection,fileNames);
+                    resizeResult = await fileSystem.resize(res,body,f.collection,notResized);
                 }else{
                     body={
-                        date:moment(Date.now()).format('DD/MM/yyyy - HH:mm:ss'),
+                        date: moment(Date.now()),
                         message: 'no new files, just updated',
                         inserted:[],
                         resized: [],
