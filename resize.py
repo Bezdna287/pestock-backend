@@ -5,10 +5,13 @@ def res(image):
     dim = None
     (h, w) = image.shape[:2]
     # desired width, for now, is hardcoded right below
-    width = int(w/4)
-    r = width / float(w)
-    dim = (width, int(h * r))
-    resized = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
+    if w >= 1080:
+        width = int(w/4)
+        r = width / float(w)
+        dim = (width, int(h * r))
+        resized = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
+    else:
+        resized = image
 
     return resized
 
@@ -22,11 +25,12 @@ print("Resizing /"+args.dir+"\n")
 
 prefix = "./images/"+args.dir + "/"
 
-fileNames = args.fileNames.replace(' ','').split(",")
+fileNames = args.fileNames.split(",")
 
 numFiles = len(fileNames)
 
 for i,name in enumerate(fileNames):
+    name=name.strip()
     [inputPath, outputPath]=(prefix+name,prefix+"resized/"+name)
     img = cv2.imread(inputPath)
 
