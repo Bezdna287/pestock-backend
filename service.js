@@ -127,8 +127,11 @@ async function upload(req,res){
 }
 
 async function insertCollection(req,res){
-    const name = req['body'].name   
-    let result = await queries.insertCollection(name)
+    const body = req['body']
+    const name = body.name 
+    const cover = body.cover 
+
+    let result = await queries.insertCollection(name, cover)
     let message = result.toString().includes('error') ? 'collection already exists' : 'new collection inserted'
     
     let dir = './images/'+name

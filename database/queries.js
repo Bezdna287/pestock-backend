@@ -101,10 +101,10 @@ async function updateFileImage(filePath){
   return result.rows[0];
 }
 
-async function insertCollection(name){
+async function insertCollection(name,cover){
   await pool.query('BEGIN')
   let response =  ''
-  let result = await pool.query('INSERT into collections (id,name) VALUES (nextval(\'collect_id\'),$1) RETURNING *',[name])
+  let result = await pool.query('INSERT into collections (id,name,cover) VALUES (nextval(\'collect_id\'),$1,$2) RETURNING *',[name,cover])
   .catch(async (error)=>{
     let errMsg = error.toString().split('\n')[0]
     console.error(errMsg)
