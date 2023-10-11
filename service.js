@@ -280,7 +280,15 @@ async function getImagesB64(bdImages, resized = true){
 
 async function getCollections(req,res){
     let collections = await queries.getCollections();
-    res.status(200).json(collections)
+    let collectionsb64 = await getCollectionsB64(collections)
+    res.status(200).json(collectionsb64)
+}
+
+async function getCollectionsB64(collections){ 
+    return await Promise.all(collections.map(async collection=>{
+        collection.b64 = await fileSystem.getB64('covers/resized/'+collection.cover); 
+        return collection
+    }));
 }
 
 async function getCollectionById(req,res){
