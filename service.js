@@ -280,8 +280,8 @@ async function getImagesB64(bdImages, resized = true){
 
 async function getCollections(req,res){
     let collections = await queries.getCollections();
-    let collectionsb64 = await getCollectionsB64(collections)
-    res.status(200).json(collectionsb64)
+    // let collectionsb64 = await getCollectionsB64(collections)
+    res.status(200).json(collections)
 }
 
 async function getCollectionsB64(collections){ 
@@ -328,7 +328,7 @@ async function getCollectionCovers(req,res){
         }
     })
 
-    res.status(200).json({message:"collection covers", response: short})
+    res.status(200).json(short)
 }
 
 module.exports = {
