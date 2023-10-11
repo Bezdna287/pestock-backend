@@ -46,6 +46,8 @@ app.get(apiName+'/collections/:idCollection', service.getCollectionById)
 
 app.get(apiName+'/collections/images/:idCollection', service.getImagesByCollection)
 
+app.get(apiName+'/collections/covers/all', service.getCollectionCovers)
+
 app.post(apiName+'/upload', service.upload)
 
 app.post(apiName+'/update', service.update)

@@ -317,6 +317,20 @@ async function deleteImage(req,res){
     res.status(200).json({"id":id, "message": 'deleted successfully', "im":del})
 }
 
+async function getCollectionCovers(req,res){
+    let covers = await queries.getCovers()
+    let coversb64 = await getImagesB64(covers)
+    let short = coversb64.map(c=>{
+        return {
+            id: c.id,
+            file_name: c.file_name,
+            b64: c.b64
+        }
+    })
+
+    res.status(200).json({message:"collection covers", response: short})
+}
+
 module.exports = {
     deleteImage,
     synchronize,
@@ -326,6 +340,7 @@ module.exports = {
     insertCollection,
     getCollections,
     getCollectionById,
+    getCollectionCovers,
     getImagesByCollection,
     getInactiveImages,
     upload,

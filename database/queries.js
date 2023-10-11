@@ -165,6 +165,12 @@ async function deleteImage(id){
   return deleted.rows;
 }
 
+async function getCovers(){
+  let idCollection = await getCollectionIdByName('covers')
+  let covers = await pool.query('SELECT * FROM images WHERE id_collection = $1 AND active = true',[idCollection]);
+  return covers.rows;
+}
+
 module.exports = {
   deleteImage,
   insertFileImage,
@@ -180,6 +186,7 @@ module.exports = {
   getCollectionById,
   getCollectionIdByName,
   getCollectionNameById,
+  getCovers,
   getImagesByCollection, 
   getImagesByKeywords,
   getInactiveImages
