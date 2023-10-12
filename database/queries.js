@@ -160,14 +160,20 @@ async function getCollectionNameById(id){
   return collection.rows[0].name;
 }
 
+async function updateCollection(id,cover){
+  console.log('UPDATE collection cover')
+  console.log(cover)
+  let result =  await pool.query('UPDATE collections SET cover = $1 WHERE id = $2 ',[cover, id])
+  return result.rows[0];
+}
+
 async function deleteImage(id){
   let deleted = await pool.query('UPDATE images SET active = false WHERE id = $1 ',[id]);
   return deleted.rows;
 }
 
 async function getCovers(){
-  let idCollection = await getCollectionIdByName('covers')
-  let covers = await pool.query('SELECT * FROM images WHERE id_collection = $1 AND active = true',[idCollection]);
+  let covers = await pool.query('select * from images where file_name in (select cover from collections where cover is not null)');
   return covers.rows;
 }
 
@@ -177,6 +183,7 @@ module.exports = {
   insertImage,
   updateImage,
   updateFileImage,
+  updateCollection,
   insertCollection,
   getImages,
   getImageById,

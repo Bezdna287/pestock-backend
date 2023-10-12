@@ -320,7 +320,7 @@ async function deleteImage(req,res){
     res.status(200).json({"id":id, "message": 'deleted successfully', "im":del})
 }
 
-async function getCollectionCovers(req,res){
+async function getCovers(req,res){
     let covers = await queries.getCovers()
     let coversb64 = await getImagesB64(covers)
     let short = coversb64.map(c=>{
@@ -330,8 +330,21 @@ async function getCollectionCovers(req,res){
             b64: c.b64
         }
     })
-
     res.status(200).json(short)
+}
+
+async function setCover(req,res){
+    const body = req['body']
+    const id = body.id 
+    const cover = body.cover
+    
+    console.log('SETTING COVER '+cover+' for collection '+id)
+
+    let result = await queries.updateCollection(id, cover)
+    let msg = 'cover updated successfully'
+
+    let rbody={message: msg, result: result}
+    res.status(200).json(rbody)
 }
 
 module.exports = {
@@ -343,10 +356,11 @@ module.exports = {
     insertCollection,
     getCollections,
     getCollectionById,
-    getCollectionCovers,
+    getCovers,
     getImagesByCollection,
     getInactiveImages,
     upload,
     update,
-    checkNewDirectories
+    checkNewDirectories,
+    setCover
 }
