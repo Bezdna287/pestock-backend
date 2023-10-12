@@ -22,7 +22,7 @@ npm install
 
 npm run build
 
-sudo docker build --tag pstock-frontend .
+docker build --tag pstock-frontend .
 
 cd ~/desarrollo/express/pestock-backend
 
@@ -30,8 +30,8 @@ git pull
 
 npm install
 
-sudo docker build --tag pstock-backend .
+docker build --tag pstock-backend .
 
-sudo docker compose -f docker-compose-ubu.yml -p pstock --env-file .env.pro up -d
+docker compose -f docker-compose-ubu.yml -p pstock --env-file .env.pro up -d
 
-sudo docker ps
+docker ps
