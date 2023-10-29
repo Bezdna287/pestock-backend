@@ -125,6 +125,11 @@ async function getImagesByCollection(idCollection){
   return images.rows;
 }
 
+async function countImagesByCollection(idCollection){
+  let images = await pool.query('SELECT count(1) FROM images WHERE id_collection = $1 AND active = true', [idCollection]);
+  return images.rows[0].count;
+}
+
 async function getImagesByKeywords(keywords){
   let images = await pool.query('SELECT * FROM images WHERE keywords like $1 AND active = true', [`${keywords}%`]);
   return images.rows;
@@ -167,6 +172,11 @@ async function updateCollection(id,cover){
   return result.rows[0];
 }
 
+async function deleteCollection(id){
+  let deleted = await pool.query('DELETE FROM collections WHERE id = $1 ',[id]);
+  return deleted.rows;
+}
+
 async function deleteImage(id){
   let deleted = await pool.query('UPDATE images SET active = false WHERE id = $1 ',[id]);
   return deleted.rows;
@@ -179,6 +189,7 @@ async function getCovers(){
 
 module.exports = {
   deleteImage,
+  deleteCollection,
   insertFileImage,
   insertImage,
   updateImage,
@@ -189,6 +200,7 @@ module.exports = {
   getImageById,
   getImagesByFileNames,
   countImagesByFileName,
+  countImagesByCollection,
   getCollections,
   getCollectionById,
   getCollectionIdByName,

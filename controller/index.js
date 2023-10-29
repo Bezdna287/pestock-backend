@@ -58,6 +58,8 @@ app.get(apiName+'/checkDir', service.checkNewDirectories)
 
 app.delete(apiName+'/delete/:id', service.deleteImage)
 
+app.delete(apiName+'/collections/:id', service.deleteCollection)
+
 app.listen(apiPort, () => {
     let time = '['+moment(Date.now()).format('DD/MM/yyyy - HH:mm:ss')+']'
     console.log(

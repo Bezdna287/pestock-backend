@@ -112,4 +112,8 @@ async function mkdir(dir){
   });
 }
 
-module.exports = { getB64, readDirectory,parseFile,resize, saveFiles,exists,write,mkdir }
+async function rmdir(dir){
+  fs.rmSync(dir,{recursive:true, force: true})
+}
+
+module.exports = { getB64, readDirectory,parseFile,resize, saveFiles,exists,write,mkdir,rmdir }

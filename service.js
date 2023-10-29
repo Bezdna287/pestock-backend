@@ -320,6 +320,27 @@ async function deleteImage(req,res){
     res.status(200).json({"id":id, "message": 'deleted successfully', "im":del})
 }
 
+async function deleteCollection(req,res){
+    const id = parseInt(req.params.id);
+    
+    const images = await queries.countImagesByCollection(id)
+
+    if(images == 0){
+        const collection = await queries.getCollectionById(id)
+        console.log('removing collection folder:',collection.name)
+        fileSystem.rmdir('./images/'+collection.name)
+
+        console.log('removing collection ',id)
+        let del = await queries.deleteCollection(id)
+        res.status(200).json({"id":id, "message": 'deleted successfully', "collection":del})
+    }else{
+        console.log('collection not empty!',id)
+        res.status(400).json({"id":id, "message": 'Collection is not empty!'})
+    }
+    
+    
+}
+
 async function getCovers(req,res){
     let covers = await queries.getCovers()
     let coversb64 = await getImagesB64(covers)
@@ -349,6 +370,7 @@ async function setCover(req,res){
 
 module.exports = {
     deleteImage,
+    deleteCollection,
     synchronize,
     findAllImages,
     findImageById,
