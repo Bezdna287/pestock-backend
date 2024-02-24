@@ -211,11 +211,11 @@ ALTER TABLE public.users OWNER TO postgres;
 
 COPY public.collections (id, name, cover) FROM stdin;
 558	covers	\N
-1	Backgrounds	1.jpg
-2	Trees	2.jpg
-3	Animals	3.jpg
-4	Lines	4.jpg
-5	Flowers	5.jpg
+1	Backgrounds	ba.jpg
+2	Trees	MutaGen0D1D48B7284.jpg
+3	Animals	cat.jpg
+4	Lines	vgbm.jpg
+5	Flowers	yhuk.jpg
 \.
 
 

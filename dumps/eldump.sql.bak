@@ -210,11 +210,12 @@ ALTER TABLE public.users OWNER TO postgres;
 --
 
 COPY public.collections (id, name, cover) FROM stdin;
-1	Backgrounds	\N
-2	Trees	\N
-3	Animals	\N
-4	Lines	\N
-5	Flowers	\N
+558	covers	\N
+1	Backgrounds	1.jpg
+2	Trees	2.jpg
+3	Animals	3.jpg
+4	Lines	4.jpg
+5	Flowers	5.jpg
 \.
 
 
@@ -224,7 +225,6 @@ COPY public.collections (id, name, cover) FROM stdin;
 
 COPY public.images (id, title, keywords, id_collection, height, width, date_publish, download, file_name, active) FROM stdin;
 505	Multicolored random flying brush strokes. Veil or fish net imitation. Red, pink, green and blue colors on the white background. Seamless pattern	motion, elegant, random, artistic, shape, isolated, brush, decoration, light, surface, fishing-net, net, grid, netting, effect, digital, veil, veil isolated, fish net pattern, flying, background, texture, abstract, green, wallpaper, design, pattern, illustration, color, modern, backdrop, graphic, camouflage, style, colorful, fabric, textile, repeat, material, vector, military, art, army, cloth, fashion, abstract background, abstract design, seamless background, seamless pattern, seamless texture	5	4000	4000	2023-01-29	0	vfeh.jpg	t
-2	Multicolored brush strokes. Violet, pink and brown colors. Seamless pattern	['poster', 'stroke', 'paint', 'splash', 'oil', 'damaged', 'element', 'gouache', 'drawn', 'yellow', 'purple neon', 'spotted', 'ornament', 'distressed', 'artistic', 'acrylic', 'drawing', 'decoration', 'multicolor', 'surface', 'color', 'purple', 'seamless', 'seamless background', 'seamless texture', 'seamless pattern', 'brush stroke pattern', 'spray paint', 'background', 'pattern', 'texture', 'watercolor', 'print', 'abstract', 'art', 'design', 'colorful', 'brush', 'bright', 'dye', 'illustration', 'tie', 'neon', 'space', 'ink', 'wallpaper', 'vivid', 'textile', 'style', 'hippie']	1	3000	3000	2022-11-01	0	11.jpg	t
 486	Blue and magenta colored fractal background, metallic constructions imitation. 3d rendering	strong, view, frame, site, wire, metal, object, detail, equipment, structural, straight, iron beams, diagonal, geometry, architecture, fractal pattern, fractal background, geometric, structure, structure background, render 3d, building construction, construction, construction background, 3d object, 3d pattern, 3d background, art, style, texture, pattern, abstract, decoration, traditional, striped, color, design, illustration, wall, line, graphic, backdrop, shape, material, textured, surface, digital, wallpaper, stripe, element	2	4000	4000	2023-01-29	0	MutaGenBC2A08F9243F4AA0.jpg	t
 487	Abstract spiral staircase, brown and green colors. 3d object, 3d rendering	effect, round, technological design, segment, abstract background, swirl, product, style, curve, digital, spiral, rotate, graphic, pattern, texture, object, material, twirl, shape, decorative, surface, abstract, 3d, stairs, staircase, target, symbol, circle, accuracy, game, success, competition, sport, illustration, aim, center, concept, dart, red, goal, accurate, arrow, design, play, icon, aiming, dartboard, white, element, background	2	3200	3200	2023-01-29	0	MutaGen0CC3C4D8F4.jpg	t
 490	3d grey torus with patterned surface, isolated on the white background	3d render, isolated on white, silhouette, geometry, futuristic, conundrum, decorative, texture, conceptual, mesh, pattern, 3d, perspective, metaphor, digital, endless, single, complexity, geometric abstract shapes, geometric shapes, silver torus, silver thor, silver texture, silver, metalized, thor, design, white, abstract, graphic, background, illustration, isolated, icon, round, art, labyrinth, black, circle, maze, concept, symbol, sign, search, idea, shape, game, challenge, element, logo	2	4000	4000	2023-01-29	0	MutaGen74795D6435B143C103.jpg	t
@@ -234,6 +234,7 @@ COPY public.images (id, title, keywords, id_collection, height, width, date_publ
 516	Abstract vibrant brush strokes, stars and galaxy imitation. Seamless pattern. Green, black and white colors.	space, black, green, abstract, abstract art, art, artistic, backdrop, background, bright, brush, brush stroke, brush stroke texture, color, colorful, decoration, decorative, design, design element, digital texture, dust, effect, element, expressionism style, futuristic, graphic, grunge, hand made artwork, illustration, iridescent colors, light, messy, modern, mystery, paint, paint backdrop, paper, pattern, seamless pattern, smoky dense, stain, surreal creativity, texture, textured, vibrant, vibrant color, vintage, wall, wallpaper, watercolor	5	4000	4000	2023-01-29	0	zxch.jpg	t
 526	Round circles with reflection effect on the steel background. Seamless pattern	iron, metallic, silver, sheet, industrial, stainless, aluminum, steel, round, vintage, protection, top, repeat, perspective, row, close, structure, residential, classic, architectural, building, outdoor, tiled, construction, mosaic, background, pattern, abstract, design, texture, modern, material, wallpaper, graphic, surface, gray, geometric, textured, grid, wall, detail, backdrop, style, closeup, illustration, fabric, architecture, retro, metal, cover	1	4000	6000	2023-01-29	0	grid pattern7.jpg	t
 535	Gray cracked wall with reflection effect. Seamless abstract background	abstract, antique, architectural, architecture, art, backdrop, background, grey, block, border, brick, brickwork, built, cement, closeup, reflexion, construction, facade, frame, granite, gray, grey, grunge, home, house, masonry, material, modern, mosaic, natural, nature, old, outdoor, pattern, retro, rock, rough, solid, stone, structure, summer, surface, technology, texture	1	2000	3000	2023-01-29	0	1brown.jpg	t
+2	11.jpg	 key11.jpg	558	3000	3000	2022-11-01	0	11.jpg	t
 548	Green, brown, beige and orange brush strokes on the white background. Oil painting texture. seamless pattern. Pattern for wrapping, textile, print.	canvas, mixed colors, color, textured, paint, watercolor, effect, springtime, artwork, creativity, surface, element, mix, decorative, composition, surreal pattern, hand made painting, colorful drawings, handmade art, abstract design, brush stroke, seamless background, seamless pattern, acrylic paint, oil paint texture, oil paint, oil painting, illustration, abstract, design, pattern, texture, shape, creative, brush, wallpaper, drawing, grunge, stroke, modern, stain, art, acrylic, concept, bright, colorful, multicolor, oil, artistic, old fashion	4	4000	4000	2023-01-29	0	vfry8.jpg	t
 556	Multiple triangles seamless pattern. Garland of triangles. Blue, grey and yellow colors with reflection on the white background. Pattern for wrapping, textile, print.	crystal, surface, low poly, effect, pattern, polygon background, multicolor, element, acrylic, geometry, painting watercolor, artistic, concept, liquid, shape, mosaic, ornament, isolated on white, triangle background, triangles, triangle pattern, abstract, texture, design, graphic, illustration, backdrop, geometric, fabric, textile, colorful, repeat, fashion, watercolor, art, decoration, color, style, print, vintage, wrapping, decorative, abstract background, brush stroke, multicolor abstract, multicolor background, repeat pattern, seamless pattern, seamless texture, seamless wallpaper	4	4000	4000	2023-01-29	0	xswk.jpg	t
 485	Abstract twisted 3d lines, spiral pattern. Bright rainbow colors, 3d rendering, 3d object	material, twisted cable, spiral background, spiral pattern, swirl background, swirl pattern, abstraction, network, mandelbrot fractal, geometric, rotate, twist, vibrant, gradient, imagination, artwork, abstract art, spiral, whirlpool, fragment, design element, style, 3d rendering, 3d spirals, 3d background, background, abstract, design, pattern, color, backdrop, texture, shape, light, art, creative, illustration, wallpaper, modern, futuristic, concept, wave, beautiful, decorative, motion, line, graphic, decoration, technology, effect	2	3200	3200	2023-01-29	0	MutaGen5A5D34AE56E85CC106F5.jpg	t
@@ -322,6 +323,19 @@ COPY public.images (id, title, keywords, id_collection, height, width, date_publ
 557	Abstract pattern of red and green feathers on a white background. Seamless pattern.	glamour background, birds, artwork, color, feather, feathering, white background, wings, silhouette, realistic, drawing, symbol, element, illustration, bird, shape, plumage, decor, elegant, pattern, material, design, textile, abstract, texture, decorative, art, textured, seamless texture, seamless background, seamless pattern, green, red, feather texture, feather pattern, nature, background, beautiful, summer, spring, beauty, fresh, white, natural, closeup, leaf, decoration, colorful, wallpaper, bright	4	4000	4000	2023-01-29	0	yesa.jpg	t
 586	Big black pig looking for the acorns. Green hills background. Spain	tree, looking, head, big, young, acorn, animal, art, autumn, black, brown, cartoon, character, cute, design, drawing, ears, farm, feeder, food, fun, funny, graphic, green, hill, holiday, iberian, icon, mammal, mediterranean, mountain, mud, nature, outline, pig, piggy, piglet, printable, rural, season, shadow, spain, sun, swine, symbol, trough, white, wild, wildlife, winter	3	2848	4288	2023-01-29	0	big pig.jpg	t
 596	Statue of lion in the background of fields, Spain	green, nature, summer, landscape, sky, beautiful, sculpture, field, travel, park, blue, outdoor, architecture, tourism, grass, road, background, culture, view, panorama, statue, big, white, beauty, gold, cloud, face, garden, tree, national, aerial, top, public, lion, front, country, tour, day, plant, rural, scenic, mountain, yellow, sidewalk, land, decoration, flora, countryside, alley, village	3	2848	4288	2023-01-29	0	lion face right side.jpg	t
+825	1.jpg	 key1.jpg	558	3000	3000	2023-10-11	0	1.jpg	t
+826	12.jpg	 key12.jpg	558	6000	6000	2023-10-11	0	12.jpg	t
+827	8.jpg	 key8.jpg	558	3000	3000	2023-10-11	0	8.jpg	t
+828	4.jpg	 key4.jpg	558	3500	4500	2023-10-11	0	4.jpg	t
+830	5.jpg	 key5.jpg	558	3000	5000	2023-10-11	0	5.jpg	t
+829	9.jpg	 key9.jpg	558	3000	3500	2023-10-11	0	9.jpg	t
+831	14.jpg	 key14.jpg	558	4000	4000	2023-10-11	0	14.jpg	t
+832	10.jpg	 key10.jpg	558	3000	3000	2023-10-11	0	10.jpg	t
+833	7.jpg	 key7.jpg	558	4000	4000	2023-10-11	0	7.jpg	t
+834	3.jpg	 key3.jpg	558	4000	4000	2023-10-11	0	3.jpg	t
+835	6.jpg	 key6.jpg	558	3000	3000	2023-10-11	0	6.jpg	t
+836	13.jpg	 key13.jpg	558	2629	2623	2023-10-11	0	13.jpg	t
+837	2.jpg	 key2.jpg	558	3000	3000	2023-10-11	0	2.jpg	t
 \.
 
 
@@ -337,14 +351,14 @@ COPY public.users (id, nickname, email, date_register, last_entry) FROM stdin;
 -- Name: collect_id; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.collect_id', 557, true);
+SELECT pg_catalog.setval('public.collect_id', 563, true);
 
 
 --
 -- Name: images_id; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.images_id', 824, true);
+SELECT pg_catalog.setval('public.images_id', 837, true);
 
 
 --
