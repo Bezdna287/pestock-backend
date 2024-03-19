@@ -10,6 +10,7 @@ const moment = require('moment');
 
 const origins = [
     process.env.ORIGIN_INNER ,
+    "http://192.168.1.56:4200",
     process.env.ORIGIN_OUTER,
     "http://localhost:4200",
 ]
