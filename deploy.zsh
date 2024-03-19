@@ -10,7 +10,7 @@
 # remove all images
 # sudo docker rmi $(sudo docker images -q)
 
-cd ~/desarrollo/angular/eseoshe
+cd ~/desarrollo/pstock/eseoshe
 
 rm -rf dist/*
 
@@ -24,7 +24,7 @@ npm run build
 
 docker build --tag pstock-frontend .
 
-cd ~/desarrollo/express/pestock-backend
+cd ~/desarrollo/pstock/pestock-backend
 
 git pull
 

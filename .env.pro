@@ -8,4 +8,4 @@ POSTGRES_PASSWORD= Cashimba01
 POSTGRES_USER= postgres
 POSTGRES_DB= postgres
 
-API_URL=http://95.18.247.212:3000/pestock
+API_URL=http://188.78.144.87:3000/pestock
