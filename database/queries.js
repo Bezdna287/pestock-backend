@@ -11,7 +11,7 @@ const fileSystem = require('../filesystem')
 const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'postgres',
-  host: process.env.DBHOST || '192.168.1.56',
+  host: process.env.DBHOST || '192.168.1.89',
   database: 'postgres',
   password: 'Cashimba01',
   port: process.env.DBPORT || 4000,

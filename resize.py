@@ -5,8 +5,8 @@ def res(image):
     dim = None
     (h, w) = image.shape[:2]
     # desired width, for now, is hardcoded right below
-    if w >= 1080:
-        width = int(w/4)
+    if w >= 500:
+        width = int(w/8)
         r = width / float(w)
         dim = (width, int(h * r))
         resized = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
