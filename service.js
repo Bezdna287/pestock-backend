@@ -276,7 +276,8 @@ async function getImagesB64(bdImages, resized = true){
     return await Promise.all(bdImages.map(async image=>{
         const collectionName = await queries.getCollectionNameById(image.id_collection);
 
-        image.b64 = await fileSystem.getB64(collectionName+'/'+(resized ? 'resized/' : '')+image.file_name); 
+        // image.b64 = await fileSystem.getB64(collectionName+'/'+(resized ? 'resized/' : '')+image.file_name); 
+        image.b64 = image.file ? Buffer.from(image.file).toString('base64') : ''
         return image
     }));
 }

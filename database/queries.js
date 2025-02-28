@@ -55,11 +55,12 @@ async function insertImage(file){
     date_publish: moment(Date.now()).format('yyyy/MM/DD'),
     download: 0,
     file_name: file.name,
+    file: file.bytes,
     active: true
   }
   console.log('\nINSERT image')
   console.log(image)
-  let result =  await pool.query('INSERT into images (id,title, keywords, id_collection, height, width, date_publish, download, file_name, active) VALUES (nextval(\'images_id\'),$1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *',Object.values(image));
+  let result =  await pool.query('INSERT into images (id,title, keywords, id_collection, height, width, date_publish, download, file_name,file, active) VALUES (nextval(\'images_id\'),$1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *',Object.values(image));
   return result.rows[0];
 }
 
