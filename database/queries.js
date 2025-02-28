@@ -85,7 +85,10 @@ async function updateImage(image){
   const newIdCollection = image.id_collection
   console.log('\nUPDATE image')
   console.log(image)
-  let result =  await pool.query('UPDATE images SET title = $1, keywords=$2, id_collection=$3, active=true WHERE file_name = $4 ',[newTitle, newKeywords,newIdCollection,image.name])
+  // TODO: could use existing SYNC process to update every image.file column
+  // TODO: need to avoid existing keywords wipe-out. better create function to update JUST file column
+  
+  let result =  await pool.query('UPDATE images SET title = $1, keywords=$2, id_collection=$3, active=true, file=$4 WHERE file_name = $5 ',[newTitle, newKeywords,newIdCollection,image.bytes,image.name])
   return result ?? image;
 }
 
@@ -98,7 +101,7 @@ async function updateFileImage(filePath){
   const newIdCollection = await getCollectionIdByName(collectionName)
   console.log('UPDATE file image')
   console.log(image)
-  let result =  await pool.query('UPDATE images SET title = $1, keywords=$2, id_collection=$3, active=true WHERE file_name = $4 ',[newTitle, newKeywords,newIdCollection,image.file_name])
+  let result =  await pool.query('UPDATE images SET title = $1, keywords=$2, id_collection=$3, active=true, file=$4 WHERE file_name = $5 ',[newTitle, newKeywords,newIdCollection,image.bytes,image.file_name])
   return result.rows[0];
 }
 

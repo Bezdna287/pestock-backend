@@ -48,7 +48,8 @@ async function parseFile(filePath) {
     date_publish: moment(Date.now()).format('yyyy/MM/DD'),
     download: 0,
     file_name: fileName,
-    active: true
+    active: true,
+    file: dataBuffer
     };
 }
 
